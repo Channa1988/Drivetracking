@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0f1923">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Drive$Tracking">
+<title>Drive$Tracking</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070d18;--surface:#0f1a28;--surface2:#162030;--surface3:#1c2a3a;
+  --border:#1e3048;--accent:#f59e0b;--accent2:#10b981;--danger:#ef4444;
+  --blue:#60a5fa;--purple:#a78bfa;--pink:#f472b6;
+  --text:#e8edf5;--muted:#5a7291;--muted2:#8097b3;
+  --heading:'Barlow Condensed',sans-serif;--body:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;padding-bottom:70px;overflow-x:hidden;}
+
+/* HEADER */
+.header{background:linear-gradient(160deg,#070d18 0%,#0f1a28 100%);padding:16px 18px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
+.header-top{display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:var(--heading);font-size:26px;font-weight:900;letter-spacing:-0.5px;}
+.logo span{color:var(--accent);}
+.date-badge{font-size:11px;color:var(--muted2);background:var(--surface2);padding:4px 10px;border-radius:20px;border:1px solid var(--border);}
+
+/* NAV */
+.nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;position:sticky;top:65px;z-index:199;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex:0 0 auto;padding:10px 11px;border:none;background:none;color:var(--muted);font-family:var(--heading);font-size:10.5px;font-weight:700;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* PAGES */
+.page{display:none;padding:13px;animation:fadeIn 0.18s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:11px;}
+.card-title{font-family:var(--heading);font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+
+/* GRID / STAT BOXES */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:11px;}
+.stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:12px 11px;}
+.stat-label{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}
+.stat-value{font-family:var(--heading);font-size:24px;font-weight:800;}
+.green{color:var(--accent2);}.yellow{color:var(--accent);}.red{color:var(--danger);}.blue{color:var(--blue);}.purple{color:var(--purple);}
+
+/* PERIOD ROW */
+.period-row{display:flex;gap:5px;margin-bottom:13px;flex-wrap:wrap;}
+.period-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-family:var(--heading);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.15s;}
+.period-btn.active{background:var(--accent);color:#000;border-color:var(--accent);}
+
+/* FORMS */
+.form-row{display:flex;gap:9px;margin-bottom:9px;}
+.fg{flex:1;min-width:0;}
+label{display:block;font-size:10px;font-weight:600;color:var(--muted);margin-bottom:4px;letter-spacing:0.6px;text-transform:uppercase;}
+input,select,textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:9px;font-family:var(--body);font-size:13.5px;outline:none;transition:border-color 0.15s;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+select option{background:var(--surface);}
+textarea{resize:none;}
+
+/* BUTTONS */
+.btn{width:100%;padding:11px;border:none;border-radius:10px;font-family:var(--heading);font-size:14px;font-weight:700;letter-spacing:0.8px;cursor:pointer;transition:all 0.15s;margin-top:3px;}
+.btn:active{transform:scale(0.98);}
+.btn-primary{background:var(--accent);color:#000;}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-green{background:var(--accent2);color:#000;}
+.btn-blue{background:var(--blue);color:#000;}
+.btn-purple{background:var(--purple);color:#000;}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--muted2);}
+.btn-sm{width:auto;padding:5px 10px;font-size:10px;border-radius:7px;margin-top:0;}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+.btn-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:4px;}
+
+/* ENTRY LIST */
+.entry-list{max-height:290px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.entry-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);}
+.entry-item:last-child{border-bottom:none;}
+.e-left{flex:1;min-width:0;}
+.e-cat{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.e-note{font-size:13px;color:var(--text);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.e-date{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.e-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.e-amt{font-family:var(--heading);font-size:17px;font-weight:700;}
+.del-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;}
+.del-btn:active{background:var(--danger);color:#fff;border-color:var(--danger);}
+
+/* NET BAR */
+.net-bar{background:linear-gradient(90deg,#0a1e12,#0a0f18);border:1px solid #183328;border-radius:13px;padding:14px 16px;margin-bottom:11px;display:flex;justify-content:space-between;align-items:center;}
+.net-label{font-family:var(--heading);font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.net-value{font-family:var(--heading);font-size:32px;font-weight:800;}
+
+/* CAT ROW */
+.cat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.cat-row:last-child{border-bottom:none;}
+.cat-name{font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:7px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.cat-amt{font-family:var(--heading);font-size:16px;font-weight:700;}
+.cat-pct{font-size:10px;color:var(--muted);margin-left:5px;}
+
+/* BAR CHART */
+.bar-chart{display:flex;align-items:flex-end;gap:3px;height:75px;margin-top:8px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+.bar{width:100%;border-radius:3px 3px 0 0;min-height:3px;}
+.bar-lbl{font-size:8.5px;color:var(--muted);text-align:center;}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:26px 16px;color:var(--muted);font-size:12.5px;}
+.empty .icon{font-size:32px;margin-bottom:7px;}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.sec-title{font-family:var(--heading);font-size:13px;font-weight:700;letter-spacing:0.4px;}
+
+/* RECEIPT THUMB */
+.rcpt-thumb{width:24px;height:24px;border-radius:4px;object-fit:cover;vertical-align:middle;cursor:pointer;border:1px solid var(--border);}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:430px;padding:18px;max-height:93vh;overflow-y:auto;animation:up 0.28s ease;}
+@keyframes up{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-hdr{font-family:var(--heading);font-size:19px;font-weight:800;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.modal-close{background:var(--surface2);border:1px solid var(--border);color:var(--muted2);border-radius:8px;padding:5px 12px;font-size:13px;cursor:pointer;}
+
+/* ============ CALENDAR ============ */
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.cal-month{font-family:var(--heading);font-size:20px;font-weight:800;}
+.cal-nav{background:var(--surface2);border:1px solid var(--border);color:var(--muted2);border-radius:8px;padding:6px 12px;font-size:16px;cursor:pointer;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day-name{font-size:9.5px;font-weight:700;color:var(--muted);text-align:center;padding:4px 0;letter-spacing:0.5px;}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;position:relative;font-size:13px;transition:background 0.15s;}
+.cal-day:hover{background:var(--surface3);}
+.cal-day.today{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);font-weight:700;color:var(--accent);}
+.cal-day.has-event::after{content:'';width:5px;height:5px;background:var(--accent2);border-radius:50%;position:absolute;bottom:3px;}
+.cal-day.has-reminder::after{background:var(--blue);}
+.cal-day.has-both::after{background:var(--purple);}
+.cal-day.other-month{color:var(--muted);}
+.cal-day.selected{background:rgba(245,158,11,0.25);border:1px solid var(--accent);}
+.event-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:6px;font-size:11.5px;margin-bottom:6px;cursor:pointer;}
+.event-badge.appointment{background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);color:var(--blue);}
+.event-badge.reminder{background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:var(--purple);}
+.event-badge.task{background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:var(--accent2);}
+
+/* ============ NOTEPAD ============ */
+.note-list{max-height:none;}
+.note-card{background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:9px;position:relative;}
+.note-card-title{font-family:var(--heading);font-size:15px;font-weight:700;margin-bottom:4px;padding-right:30px;}
+.note-card-body{font-size:13px;color:var(--muted2);line-height:1.6;white-space:pre-wrap;}
+.note-card-ts{font-size:10.5px;color:var(--muted);margin-top:7px;}
+.note-del{position:absolute;top:10px;right:10px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;}
+.note-del:active{background:var(--danger);color:#fff;}
+.note-tag{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-right:4px;}
+.tag-shopping{background:rgba(245,158,11,0.15);color:var(--accent);}
+.tag-work{background:rgba(96,165,250,0.15);color:var(--blue);}
+.tag-personal{background:rgba(16,185,129,0.15);color:var(--accent2);}
+.tag-general{background:rgba(167,139,250,0.15);color:var(--purple);}
+
+/* CHECK ITEMS */
+.check-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+.check-item:last-child{border-bottom:none;}
+.check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent2);cursor:pointer;flex-shrink:0;}
+.check-item span{font-size:13px;flex:1;}
+.check-item span.done{text-decoration:line-through;color:var(--muted);}
+
+/* ============ INVESTMENTS ============ */
+.inv-ticker{font-family:var(--heading);font-size:20px;font-weight:800;color:var(--accent);}
+.inv-name{font-size:12px;color:var(--muted2);margin-top:1px;}
+.inv-change{font-family:var(--heading);font-size:15px;font-weight:700;}
+
+/* ============ SETTINGS ============ */
+.manage-list{max-height:200px;overflow-y:auto;}
+.manage-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.manage-item:last-child{border-bottom:none;}
+.add-inline{display:flex;gap:7px;margin-top:9px;}
+.add-inline input{flex:1;padding:9px 10px;font-size:13px;}
+.add-inline button{flex-shrink:0;padding:9px 13px;background:var(--accent2);border:none;color:#000;border-radius:8px;font-family:var(--heading);font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ============ RECEIPT SCANNER ============ */
+.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:26px 18px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:11px;}
+.drop-zone:hover{border-color:var(--accent);background:rgba(245,158,11,0.04);}
+.drop-icon{font-size:38px;margin-bottom:7px;}
+#rcptPreview{width:100%;border-radius:10px;margin-bottom:11px;display:none;max-height:210px;object-fit:contain;border:1px solid var(--border);}
+.scan-box{background:var(--surface2);border:1px solid rgba(245,158,11,0.25);border-radius:11px;padding:13px;margin-bottom:11px;}
+.scan-box-title{font-family:var(--heading);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent);text-transform:uppercase;margin-bottom:11px;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:7px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* INSTALL BANNER */
+.install-banner{background:linear-gradient(90deg,#181000,#181800);border:1px solid #3a2800;border-radius:10px;padding:10px 13px;margin-bottom:13px;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--accent);}
+
+/* TOAST */
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent2);color:#000;padding:9px 18px;border-radius:20px;font-family:var(--heading);font-size:13px;font-weight:700;opacity:0;transition:all 0.3s;z-index:9999;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--danger);color:#fff;}
+
+/* NOTIFICATION BELL */
+.notif-dot{width:7px;height:7px;background:var(--danger);border-radius:50%;position:absolute;top:8px;right:7px;}
+
+/* REPORT SHARE SECTION */
+.share-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+
+#fileInput,#cameraInput{display:none;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">Drive<span>$</span>Tracking</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="position:relative;cursor:pointer" onclick="showPage('calendar',document.querySelectorAll('.nav-btn')[5])">
+        <span style="font-size:20px">🔔</span>
+        <div class="notif-dot" id="notifDot" style="display:none"></div>
+      </div>
+      <div class="date-badge" id="dateDisplay"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage('dashboard',this)">📊 DASH</button>
+  <button class="nav-btn" onclick="showPage('income',this)">💵 INCOME</button>
+  <button class="nav-btn" onclick="showPage('expenses',this)">💸 SPEND</button>
+  <button class="nav-btn" onclick="showPage('mileage',this)">🛣️ MILES</button>
+  <button class="nav-btn" onclick="showPage('invest',this)">📈 INVEST</button>
+  <button class="nav-btn" onclick="showPage('calendar',this)" style="position:relative">📅 CAL</button>
+  <button class="nav-btn" onclick="showPage('notepad',this)">📝 NOTES</button>
+  <button class="nav-btn" onclick="showPage('reports',this)">📋 REPORTS</button>
+  <button class="nav-btn" onclick="showPage('settings',this)">⚙️ SET</button>
+</nav>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="page active" id="page-dashboard">
+  <div id="installBanner" class="install-banner" style="display:none">
+    <span style="font-size:19px">📲</span>
+    <div><strong style="display:block;font-size:13px">Install this app!</strong>Tap browser menu → "Add to Home Screen"</div>
+  </div>
+  <div class="period-row" id="dashPeriodRow">
+    <button class="period-btn" onclick="setPeriod('day',this)">TODAY</button>
+    <button class="period-btn" onclick="setPeriod('week',this)">WEEK</button>
+    <button class="period-btn" onclick="setPeriod('month',this)">MONTH</button>
+    <button class="period-btn" onclick="setPeriod('year',this)">YEAR</button>
+    <button class="period-btn active" onclick="setPeriod('all',this)">ALL</button>
+  </div>
+  <div class="net-bar">
+    <div><div class="net-label">Net Earnings</div><div style="font-size:10.5px;color:var(--muted);margin-top:2px">Income − Expenses</div></div>
+    <div class="net-value" id="dashNet">$0.00</div>
+  </div>
+  <div class="g2">
+    <div class="stat-box"><div class="stat-label">💵 Income</div><div class="stat-value green" id="dashIncome">$0</div></div>
+    <div class="stat-box"><div class="stat-label">💸 Expenses</div><div class="stat-value red" id="dashExpenses">$0</div></div>
+    <div class="stat-box"><div class="stat-label">🛣️ Miles</div><div class="stat-value blue" id="dashMiles">0</div></div>
+    <div class="stat-box"><div class="stat-label">📈 Investments</div><div class="stat-value purple" id="dashInvest">$0</div></div>
+  </div>
+  <div id="upcomingReminders" style="margin-bottom:11px"></div>
+  <div class="card"><div class="card-title">Recent Activity</div><div id="recentList"><div class="empty"><div class="icon">📋</div>No entries yet</div></div></div>
+</div>
+
+<!-- ==================== INCOME ==================== -->
+<div class="page" id="page-income">
+  <div class="card">
+    <div class="card-title">Add Income</div>
+    <div id="incForm">
+      <div class="form-row">
+        <div class="fg"><label>Amount ($)</label><input type="number" id="incAmt" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Date</label><input type="date" id="incDate"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Source</label><select id="incSource"></select></div>
+        <div class="fg"><label>Miles Driven</label><input type="number" id="incMiles" placeholder="0.0" step="0.1" min="0"></div>
+      </div>
+      <div id="addSrcInline" style="display:none;margin-bottom:9px">
+        <label>New Source Name</label>
+        <div style="display:flex;gap:7px">
+          <input type="text" id="quickSrcInput" placeholder="e.g. Shipt, Gopuff..." style="flex:1">
+          <button onclick="quickAddSrc()" style="flex-shrink:0;padding:9px 13px;background:var(--accent2);border:none;color:#000;border-radius:8px;font-family:var(--heading);font-size:12px;font-weight:700;cursor:pointer">+ ADD</button>
+          <button onclick="document.getElementById('addSrcInline').style.display='none'" style="flex-shrink:0;padding:9px 11px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;font-size:12px;cursor:pointer">✕</button>
+        </div>
+      </div>
+      <button onclick="document.getElementById('addSrcInline').style.display=document.getElementById('addSrcInline').style.display==='none'?'block':'none'" style="background:none;border:none;color:var(--muted);font-size:11.5px;cursor:pointer;padding:0;margin-bottom:9px;text-decoration:underline;text-underline-offset:3px">+ Add new income source</button>
+      <div class="form-row">
+        <div class="fg"><label>Note</label><input type="text" id="incNote" placeholder="e.g. evening shift"></div>
+        <div class="fg" id="incEarnPerMileBox" style="display:none">
+          <label>Earning/Mile</label>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-family:var(--heading);font-size:16px;font-weight:700;color:var(--accent)" id="incEarnPerMile">—</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="addIncome()">+ ADD INCOME</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Delivery Miles Summary</div>
+    <div class="g3">
+      <div class="stat-box"><div class="stat-label">Total Miles</div><div class="stat-value blue" id="incTotalMiles">0</div></div>
+      <div class="stat-box"><div class="stat-label">Avg $/Mile</div><div class="stat-value yellow" id="incAvgPerMile">—</div></div>
+      <div class="stat-box"><div class="stat-label">Trips w/ Miles</div><div class="stat-value green" id="incTripsWithMiles">0</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="sec-hdr"><div class="sec-title">Income History</div></div><div class="entry-list" id="incomeList"><div class="empty"><div class="icon">💵</div>No income logged yet</div></div></div>
+</div>
+
+<!-- ==================== EXPENSES ==================== -->
+<div class="page" id="page-expenses">
+  <div class="card">
+    <div class="card-title">Add Expense</div>
+    <div class="btn-row" style="margin-bottom:11px">
+      <button class="btn btn-blue" style="font-size:12px" onclick="openReceiptModal('expense')">📷 SCAN RECEIPT</button>
+      <button class="btn btn-outline" id="expShowBtn" style="font-size:12px" onclick="toggleForm('expForm','expShowBtn')">✏️ MANUAL</button>
+    </div>
+    <div id="expForm" style="display:none">
+      <div class="form-row">
+        <div class="fg"><label>Amount ($)</label><input type="number" id="expAmt" placeholder="0.00" step="0.01"></div>
+        <div class="fg"><label>Date</label><input type="date" id="expDate"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Category</label><select id="expCat"></select></div>
+        <div class="fg"><label>Note</label><input type="text" id="expNote" placeholder="e.g. Shell station"></div>
+      </div>
+      <div id="addCatInline" style="display:none;margin-bottom:9px">
+        <label>New Category Name</label>
+        <div style="display:flex;gap:7px">
+          <input type="text" id="quickCatInput" placeholder="e.g. Car Wash, Tools..." style="flex:1">
+          <button onclick="quickAddCat()" style="flex-shrink:0;padding:9px 13px;background:var(--accent2);border:none;color:#000;border-radius:8px;font-family:var(--heading);font-size:12px;font-weight:700;cursor:pointer">+ ADD</button>
+          <button onclick="document.getElementById('addCatInline').style.display='none'" style="flex-shrink:0;padding:9px 11px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;font-size:12px;cursor:pointer">✕</button>
+        </div>
+      </div>
+      <button onclick="document.getElementById('addCatInline').style.display=document.getElementById('addCatInline').style.display==='none'?'block':'none'" style="background:none;border:none;color:var(--muted);font-size:11.5px;cursor:pointer;padding:0;margin-bottom:9px;text-decoration:underline;text-underline-offset:3px">+ Add new expense category</button>
+      <button class="btn btn-primary" onclick="addExpense()">+ ADD EXPENSE</button>
+    </div>
+  </div>
+  <div class="card"><div class="card-title">Breakdown by Category</div><div id="expBreakdown"><div class="empty"><div class="icon">💸</div>No expenses yet</div></div></div>
+  <div class="card"><div class="sec-hdr"><div class="sec-title">Expense History</div></div><div class="entry-list" id="expenseList"><div class="empty"><div class="icon">💸</div>No expenses logged yet</div></div></div>
+</div>
+
+<!-- ==================== MILEAGE ==================== -->
+<div class="page" id="page-mileage">
+  <!-- Odometer Calculator -->
+  <div class="card">
+    <div class="card-title">🚗 Odometer Calculator</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Enter your start & end odometer reading — miles calculated automatically</div>
+    <div class="form-row">
+      <div class="fg"><label>Start Reading</label><input type="number" id="odoStart" placeholder="e.g. 45230" step="0.1" oninput="updateOdoCalc()"></div>
+      <div class="fg"><label>End Reading</label><input type="number" id="odoEnd" placeholder="e.g. 45312" step="0.1" oninput="updateOdoCalc()"></div>
+    </div>
+    <div id="odoResultBox" style="display:none;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:10px 14px;margin-bottom:10px;text-align:center">
+      <div style="font-size:12px;color:var(--muted)">Miles Driven</div>
+      <div id="odoMiles" style="font-family:var(--heading);font-size:28px;font-weight:700;color:var(--blue)">0.0</div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Date</label><input type="date" id="odoDate"></div>
+      <div class="fg"><label>Type</label><select id="odoType"><option>Delivery</option><option>Personal</option><option>Other</option></select></div>
+    </div>
+    <div class="fg" style="margin-bottom:10px"><label>Note</label><input type="text" id="odoNote" placeholder="e.g. DoorDash shift"></div>
+    <button class="btn btn-primary" onclick="addOdoMileage()">+ LOG FROM ODOMETER</button>
+  </div>
+  <!-- Manual Entry -->
+  <div class="card">
+    <div class="card-title">✏️ Manual Miles Entry</div>
+    <div class="form-row">
+      <div class="fg"><label>Miles</label><input type="number" id="mileAmt" placeholder="0.0" step="0.1"></div>
+      <div class="fg"><label>Date</label><input type="date" id="mileDate"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Type</label><select id="mileType"><option>Delivery</option><option>Personal</option><option>Other</option></select></div>
+      <div class="fg"><label>Note</label><input type="text" id="mileNote" placeholder="route details"></div>
+    </div>
+    <button class="btn btn-primary" onclick="addMileage()">+ LOG MILES</button>
+  </div>
+  <div class="card">
+    <div class="card-title">Mileage Summary</div>
+    <div class="g2">
+      <div class="stat-box"><div class="stat-label">Today</div><div class="stat-value blue" id="mileToday">0</div></div>
+      <div class="stat-box"><div class="stat-label">This Week</div><div class="stat-value blue" id="mileWeek">0</div></div>
+      <div class="stat-box"><div class="stat-label">This Month</div><div class="stat-value blue" id="mileMonth">0</div></div>
+      <div class="stat-box"><div class="stat-label">This Year</div><div class="stat-value blue" id="mileYear">0</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px solid var(--border)">
+      <span style="font-size:12px;color:var(--muted)">IRS Rate 2025</span><span style="font-family:var(--heading);font-size:17px;font-weight:700;color:var(--accent)">$0.70/mi</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+      <span style="font-size:12px;color:var(--muted)">Est. Tax Deduction (Year)</span><span style="font-family:var(--heading);font-size:17px;font-weight:700;color:var(--accent2)" id="taxDed">$0</span>
+    </div>
+  </div>
+  <div class="card"><div class="sec-hdr"><div class="sec-title">Mileage Log</div></div><div class="entry-list" id="mileList"><div class="empty"><div class="icon">🛣️</div>No mileage logged</div></div></div>
+</div>
+
+<!-- ==================== INVESTMENTS ==================== -->
+<div class="page" id="page-invest">
+  <div class="card">
+    <div class="card-title">Add Investment Transaction</div>
+    <div class="form-row">
+      <div class="fg"><label>Amount ($)</label><input type="number" id="invAmt" placeholder="0.00" step="0.01"></div>
+      <div class="fg"><label>Date</label><input type="date" id="invDate"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Type</label>
+        <select id="invType">
+          <option value="deposit">💰 Deposit / Buy</option>
+          <option value="withdrawal">💸 Withdrawal / Sell</option>
+          <option value="dividend">📊 Dividend / Interest</option>
+          <option value="gain">📈 Gain / Return</option>
+          <option value="loss">📉 Loss</option>
+          <option value="fee">🏦 Fee / Commission</option>
+        </select>
+      </div>
+      <div class="fg"><label>Asset / Ticker</label><input type="text" id="invTicker" placeholder="e.g. AAPL, ETF, 401k"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Note</label><input type="text" id="invNote" placeholder="e.g. Bought 5 shares"></div>
+    </div>
+    <button class="btn btn-purple" onclick="addInvestment()">+ ADD TRANSACTION</button>
+  </div>
+
+  <div class="g3">
+    <div class="stat-box"><div class="stat-label">Total In</div><div class="stat-value green" id="invTotalIn">$0</div></div>
+    <div class="stat-box"><div class="stat-label">Total Out</div><div class="stat-value red" id="invTotalOut">$0</div></div>
+    <div class="stat-box"><div class="stat-label">Net Value</div><div class="stat-value purple" id="invNet">$0</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">By Asset</div>
+    <div id="invByAsset"><div class="empty"><div class="icon">📈</div>No investments yet</div></div>
+  </div>
+
+  <div class="card"><div class="sec-hdr"><div class="sec-title">Transaction History</div></div><div class="entry-list" id="invList"><div class="empty"><div class="icon">📈</div>No transactions yet</div></div></div>
+</div>
+
+<!-- ==================== CALENDAR ==================== -->
+<div class="page" id="page-calendar">
+  <div class="card">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="calNav(-1)">‹</button>
+      <div class="cal-month" id="calMonthLabel"></div>
+      <button class="cal-nav" onclick="calNav(1)">›</button>
+    </div>
+    <div class="cal-grid" id="calDayNames"></div>
+    <div class="cal-grid" id="calGrid" style="margin-top:4px"></div>
+  </div>
+
+  <div class="card" id="selectedDayCard" style="display:none">
+    <div class="card-title"><span id="selectedDayLabel">Selected Day</span><button class="btn btn-sm btn-primary" onclick="openEventModal()">+ ADD</button></div>
+    <div id="selectedDayEvents"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Upcoming (next 14 days)</div>
+    <div id="upcomingList"><div class="empty"><div class="icon">📅</div>No upcoming events</div></div>
+  </div>
+</div>
+
+<!-- ==================== NOTEPAD ==================== -->
+<div class="page" id="page-notepad">
+  <div class="card">
+    <div class="card-title">New Note / List</div>
+    <div class="form-row">
+      <div class="fg"><label>Title</label><input type="text" id="noteTitle" placeholder="e.g. Grocery List, Work Tasks..."></div>
+      <div class="fg"><label>Tag</label>
+        <select id="noteTag">
+          <option value="general">📌 General</option>
+          <option value="shopping">🛒 Shopping List</option>
+          <option value="work">💼 Work</option>
+          <option value="personal">🧍 Personal</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:9px">
+      <label>Content</label>
+      <textarea id="noteBody" rows="4" placeholder="Type your note here. For a list, put each item on its own line starting with - or • to make it checkable."></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="addNote()">+ SAVE NOTE</button>
+  </div>
+  <div id="noteList"></div>
+</div>
+
+<!-- ==================== REPORTS ==================== -->
+<div class="page" id="page-reports">
+  <div class="period-row" id="repPeriodRow">
+    <button class="period-btn active" onclick="setRepPeriod('week',this)">WEEK</button>
+    <button class="period-btn" onclick="setRepPeriod('month',this)">MONTH</button>
+    <button class="period-btn" onclick="setRepPeriod('year',this)">YEAR</button>
+    <button class="period-btn" onclick="setRepPeriod('all',this)">ALL TIME</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📤 Download &amp; Share Report</div>
+    <div class="share-row">
+      <button class="btn btn-primary" style="font-size:12px" onclick="downloadPDF()">📄 SAVE AS PDF</button>
+      <button class="btn btn-purple" style="font-size:12px" onclick="sharePDF()">📤 SHARE PDF</button>
+    </div>
+    <div class="share-row" style="margin-top:7px">
+      <button class="btn btn-green" style="font-size:12px" onclick="downloadReport()">⬇️ DOWNLOAD CSV</button>
+      <button class="btn btn-outline" style="font-size:12px;color:var(--text)" onclick="copyReportToClipboard()">📋 COPY TEXT</button>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-title">Income by Source</div><div id="repIncSrc"><div class="empty"><div class="icon">📊</div>No data</div></div></div>
+  <div class="card"><div class="card-title">Expenses by Category</div><div id="repExpCat"><div class="empty"><div class="icon">💸</div>No data</div></div></div>
+  <div class="card"><div class="card-title">Daily Earnings — Last 7 Days</div><div class="bar-chart" id="weeklyChart"></div></div>
+  <div class="card"><div class="card-title">Full Summary</div><div id="repSummary"></div></div>
+  <div class="card" style="border-color:#ef444420">
+    <div class="card-title" style="color:var(--danger)">Danger Zone</div>
+    <button class="btn btn-danger" onclick="clearAllData()">🗑️ CLEAR ALL DATA</button>
+  </div>
+</div>
+
+<!-- ==================== SETTINGS ==================== -->
+<div class="page" id="page-settings">
+  <div class="card">
+    <div class="card-title">💵 Income Sources</div>
+    <div class="manage-list" id="srcList"></div>
+    <div class="add-inline"><input type="text" id="newSrc" placeholder="e.g. Shipt, Roadie..."><button onclick="addCustomSrc()">+ ADD</button></div>
+  </div>
+  <div class="card">
+    <div class="card-title">💸 Expense Categories</div>
+    <div class="manage-list" id="catList"></div>
+    <div class="add-inline"><input type="text" id="newCat" placeholder="e.g. Car Wash, Tools..."><button onclick="addCustomCat()">+ ADD</button></div>
+  </div>
+  <div class="card">
+    <div class="card-title">💾 Data Backup &amp; Restore</div>
+    <p style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:12px">Save a backup file to protect your data from being wiped when you clear your browser cache. Restore it anytime to get everything back.</p>
+    <button class="btn btn-green" style="margin-bottom:9px" onclick="exportBackup()">📤 EXPORT BACKUP</button>
+    <button class="btn btn-blue" onclick="document.getElementById('importFile').click()">📥 IMPORT BACKUP</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(this)">
+    <div id="backupInfo" style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Import from Google Sheets</div>
+    <p style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:12px">Copy your data from Google Sheets and paste it below. The app will automatically sort each row into Income, Expenses, or Mileage.</p>
+    <button class="btn btn-outline" style="color:var(--text);margin-bottom:9px;font-size:12px" onclick="showSheetsHelp()">❓ HOW TO COPY FROM SHEETS</button>
+    <label>Paste your sheet data here</label>
+    <textarea id="sheetsInput" rows="5" placeholder="Select all cells in Google Sheets → Copy → Paste here..." style="margin-bottom:9px;font-size:12px"></textarea>
+    <div style="margin-bottom:9px">
+      <label>Which row are your column headers on?</label>
+      <select id="sheetsHeaderRow" style="margin-bottom:0">
+        <option value="1">Row 1 (first row)</option>
+        <option value="2">Row 2</option>
+        <option value="0">No headers — first row is data</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="previewSheetsImport()">🔍 PREVIEW IMPORT</button>
+  </div>
+  <div class="card">
+    <div class="card-title">ℹ️ Drive$Tracking v3.0</div>
+    <p style="font-size:12.5px;color:var(--muted2);line-height:1.7">Your all-in-one delivery driver finance app. Track income, expenses, mileage, investments, appointments, and notes — all saved locally on your device. Scan receipts with AI. Download and share reports.</p>
+  </div>
+</div>
+
+<!-- ==================== SHEETS IMPORT MODAL ==================== -->
+<div class="overlay" id="sheetsModal">
+  <div class="modal" style="max-height:85vh;overflow-y:auto">
+    <div class="modal-hdr"><span>📊 Import Preview</span><button class="modal-close" onclick="closeModal('sheetsModal')">✕ Close</button></div>
+    <div id="sheetsPreviewStats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px"></div>
+    <div id="sheetsPreviewTable" style="overflow-x:auto;margin-bottom:12px;font-size:11.5px"></div>
+    <div id="sheetsWarnings" style="margin-bottom:12px"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn btn-primary" onclick="confirmSheetsImport()">✅ IMPORT ALL</button>
+      <button class="btn btn-outline" style="color:var(--text)" onclick="closeModal('sheetsModal')">✕ CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SHEETS HELP MODAL ==================== -->
+<div class="overlay" id="sheetsHelpModal">
+  <div class="modal">
+    <div class="modal-hdr"><span>❓ How to Copy from Google Sheets</span><button class="modal-close" onclick="closeModal('sheetsHelpModal')">✕ Close</button></div>
+    <div style="font-size:13px;line-height:1.8;color:var(--muted2)">
+      <div style="margin-bottom:10px"><strong style="color:var(--text)">Step 1</strong> — Open your Google Sheet on your phone or computer</div>
+      <div style="margin-bottom:10px"><strong style="color:var(--text)">Step 2</strong> — Tap the top-left corner cell (A1) to start selecting</div>
+      <div style="margin-bottom:10px"><strong style="color:var(--text)">Step 3</strong> — Select ALL your data rows including the header row</div>
+      <div style="margin-bottom:10px"><strong style="color:var(--text)">Step 4</strong> — Copy (Ctrl+C or long press → Copy)</div>
+      <div style="margin-bottom:10px"><strong style="color:var(--text)">Step 5</strong> — Come back here and paste into the text box</div>
+      <div style="margin-bottom:14px"><strong style="color:var(--text)">Step 6</strong> — Tap Preview Import and check everything looks right</div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:12px;font-size:11.5px">
+        <strong style="color:var(--accent)">💡 Tips</strong><br>
+        • Your columns can be in any order — the app figures it out<br>
+        • Dates can be MM/DD/YYYY, YYYY-MM-DD, or Month DD YYYY<br>
+        • Source column (DoorDash, UberEats etc) = Income entry<br>
+        • Category column (Gas, Food etc) = Expense entry<br>
+        • Only miles with no amount = Mileage entry<br>
+        • Rows with problems are shown as warnings before import
+      </div>
+    </div>
+    <button class="btn btn-primary" style="margin-top:14px" onclick="closeModal('sheetsHelpModal')">GOT IT</button>
+  </div>
+</div>
+
+<!-- ==================== EDIT MODAL ==================== -->
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-hdr"><span id="editModalTitle">✏️ Edit Entry</span><button class="modal-close" onclick="closeModal('editModal')">✕ Close</button></div>
+
+    <!-- INCOME EDIT -->
+    <div id="editIncome" style="display:none">
+      <div class="form-row">
+        <div class="fg"><label>Amount ($)</label><input type="number" id="eIncAmt" step="0.01" placeholder="0.00"></div>
+        <div class="fg"><label>Date</label><input type="date" id="eIncDate"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Source</label><select id="eIncSource"></select></div>
+        <div class="fg"><label>Miles Driven</label><input type="number" id="eIncMiles" step="0.1" min="0" placeholder="0.0"></div>
+      </div>
+      <div style="margin-bottom:9px"><label>Note</label><input type="text" id="eIncNote" placeholder="e.g. evening shift"></div>
+    </div>
+
+    <!-- EXPENSE EDIT -->
+    <div id="editExpense" style="display:none">
+      <div class="form-row">
+        <div class="fg"><label>Amount ($)</label><input type="number" id="eExpAmt" step="0.01" placeholder="0.00"></div>
+        <div class="fg"><label>Date</label><input type="date" id="eExpDate"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Category</label><select id="eExpCat"></select></div>
+        <div class="fg"><label>Note</label><input type="text" id="eExpNote"></div>
+      </div>
+    </div>
+
+    <!-- MILEAGE EDIT -->
+    <div id="editMileage" style="display:none">
+      <div class="form-row">
+        <div class="fg"><label>Miles</label><input type="number" id="eMileAmt" step="0.1" min="0" placeholder="0.0"></div>
+        <div class="fg"><label>Date</label><input type="date" id="eMileDate"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Trip Type</label><select id="eMileType"><option>Delivery</option><option>Personal</option><option>Other</option></select></div>
+        <div class="fg"><label>Note</label><input type="text" id="eMileNote"></div>
+      </div>
+    </div>
+
+    <!-- INVESTMENT EDIT -->
+    <div id="editInvestment" style="display:none">
+      <div class="form-row">
+        <div class="fg"><label>Amount ($)</label><input type="number" id="eInvAmt" step="0.01" placeholder="0.00"></div>
+        <div class="fg"><label>Date</label><input type="date" id="eInvDate"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Type</label>
+          <select id="eInvType">
+            <option value="deposit">💰 Deposit / Buy</option>
+            <option value="withdrawal">💸 Withdrawal / Sell</option>
+            <option value="dividend">📊 Dividend / Interest</option>
+            <option value="gain">📈 Gain / Return</option>
+            <option value="loss">📉 Loss</option>
+            <option value="fee">🏦 Fee / Commission</option>
+          </select>
+        </div>
+        <div class="fg"><label>Asset / Ticker</label><input type="text" id="eInvTicker" placeholder="e.g. AAPL"></div>
+      </div>
+      <div style="margin-bottom:9px"><label>Note</label><input type="text" id="eInvNote"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+      <button class="btn btn-primary" onclick="saveEdit()">💾 SAVE CHANGES</button>
+      <button class="btn btn-danger" onclick="deleteFromEdit()">🗑️ DELETE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RECEIPT MODAL ==================== -->
+<div class="overlay" id="rcptModal">
+  <div class="modal">
+    <div class="modal-hdr"><span>📷 Scan Receipt</span><button class="modal-close" onclick="closeModal('rcptModal')">✕ Close</button></div>
+    <div class="drop-zone" id="rcptDrop" onclick="document.getElementById('fileInput').click()">
+      <div class="drop-icon">🧾</div>
+      <strong style="font-family:var(--heading);font-size:15px">Tap to select photo</strong>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px">From gallery or files</p>
+    </div>
+    <div class="btn-row" style="margin-bottom:11px">
+      <button class="btn btn-blue" style="margin-top:0;font-size:12px" onclick="document.getElementById('cameraInput').click()">📷 CAMERA</button>
+      <button class="btn btn-outline" style="margin-top:0;font-size:12px;color:var(--text)" onclick="document.getElementById('fileInput').click()">🖼️ GALLERY</button>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" onchange="handleRcptFile(this)">
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleRcptFile(this)">
+    <img id="rcptPreview" alt="Receipt">
+    <div id="scanStatus" style="display:none;text-align:center;padding:18px;color:var(--muted);font-size:13px"><span class="spinner"></span>AI reading receipt...</div>
+    <div id="scanResult" style="display:none">
+      <div class="scan-box">
+        <div class="scan-box-title">✅ Scanned — Review &amp; Confirm</div>
+        <div style="margin-bottom:9px"><label>Amount ($)</label><input type="number" id="sAmt" step="0.01" placeholder="0.00"></div>
+        <div style="margin-bottom:9px"><label>Date</label><input type="date" id="sDate"></div>
+        <div style="margin-bottom:9px"><label id="sCatLbl">Category</label><select id="sCat"></select></div>
+        <div style="margin-bottom:9px"><label>Merchant / Note</label><input type="text" id="sNote"></div>
+        <div><label>AI Summary</label><textarea id="sRaw" rows="2" readonly style="color:var(--muted);font-size:11.5px;cursor:default"></textarea></div>
+      </div>
+      <button class="btn btn-green" onclick="confirmScan()">✅ SAVE ENTRY</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EVENT MODAL ==================== -->
+<div class="overlay" id="eventModal">
+  <div class="modal">
+    <div class="modal-hdr"><span id="eventModalTitle">📅 Add Event</span><button class="modal-close" onclick="closeModal('eventModal')">✕ Close</button></div>
+    <div style="margin-bottom:9px"><label>Title</label><input type="text" id="evTitle" placeholder="e.g. Oil Change, Dentist..."></div>
+    <div class="form-row">
+      <div class="fg"><label>Date</label><input type="date" id="evDate"></div>
+      <div class="fg"><label>Time</label><input type="time" id="evTime"></div>
+    </div>
+    <div style="margin-bottom:9px">
+      <label>Type</label>
+      <select id="evType">
+        <option value="appointment">📋 Appointment</option>
+        <option value="reminder">🔔 Reminder</option>
+        <option value="task">✅ Task</option>
+      </select>
+    </div>
+    <div style="margin-bottom:9px"><label>Notes</label><textarea id="evNotes" rows="2" placeholder="Optional details..."></textarea></div>
+    <button class="btn btn-primary" onclick="saveEvent()">💾 SAVE EVENT</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DEF_SRC=['DoorDash','UberEats','Grubhub','Amazon Flex','Instacart','Spark (Walmart)','Tips (Cash)','Other'];
+const DEF_CAT=['Gas / Fuel','Car Maintenance','Food & Drinks','Phone / Data','Insurance','Parking / Tolls','Other'];
+const CAT_COLORS=['#ef4444','#f59e0b','#10b981','#60a5fa','#a78bfa','#f472b6','#fb923c','#34d399','#818cf8','#e879f9'];
+const SRC_COLORS=['#10b981','#f59e0b','#60a5fa','#a78bfa','#f472b6','#fb923c','#34d399','#ef4444'];
+const INV_COLORS={deposit:'var(--accent2)',withdrawal:'var(--danger)',dividend:'var(--blue)',gain:'var(--accent2)',loss:'var(--danger)',fee:'var(--muted2)'};
+const INV_ICONS={deposit:'💰',withdrawal:'💸',dividend:'📊',gain:'📈',loss:'📉',fee:'🏦'};
+
+let db={income:[],expenses:[],mileage:[],investments:[],events:[],notes:[],customSources:[],customCategories:[]};
+
+function save(){try{localStorage.setItem('dt_v4',JSON.stringify(db));}catch(e){}}
+function load(){
+  try{
+    const r=localStorage.getItem('dt_v4');
+    if(r){const p=JSON.parse(r);db={income:[],expenses:[],mileage:[],investments:[],events:[],notes:[],customSources:[],customCategories:[],...p};}
+    else{
+      // migrate v3
+      const v3=localStorage.getItem('drivetrack_v3');
+      if(v3){const o=JSON.parse(v3);db.income=o.income||[];db.expenses=o.expenses||[];db.mileage=o.mileage||[];db.customSources=o.customSources||[];db.customCategories=o.customCategories||[];save();}
+    }
+  }catch(e){}
+}
+const allSrc=()=>[...DEF_SRC,...db.customSources];
+const allCat=()=>[...DEF_CAT,...db.customCategories];
+
+// ============================================================
+// UTILS
+// ============================================================
+const today=()=>new Date().toISOString().slice(0,10);
+const nowTs=()=>{const n=new Date();return n.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});};
+function getWeekStart(){const d=new Date(),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);d.setDate(diff);return d.toISOString().slice(0,10);}
+const getMonthStart=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-01`;};
+const getYearStart=()=>`${new Date().getFullYear()}-01-01`;
+function filterByP(arr,p){const t=today(),w=getWeekStart(),m=getMonthStart(),y=getYearStart();return arr.filter(e=>{if(p==='day')return e.date===t;if(p==='week')return e.date>=w;if(p==='month')return e.date>=m;if(p==='year')return e.date>=y;return true;});}
+const sum=(arr,f)=>arr.reduce((a,b)=>a+(parseFloat(b[f])||0),0);
+const fmt=n=>'$'+Math.abs(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const fmtS=n=>(n<0?'-':'')+fmt(n);
+
+// ============================================================
+// UI
+// ============================================================
+function showToast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(isErr?' err':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function toggleForm(fId,bId){const f=document.getElementById(fId),b=document.getElementById(bId),open=f.style.display==='block';f.style.display=open?'none':'block';b.textContent=open?'✏️ MANUAL':'✕ HIDE';}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+
+let activePeriod='all',activeRepPeriod='week';
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  renderAll();
+}
+function setPeriod(p,btn){activePeriod=p;document.querySelectorAll('#dashPeriodRow .period-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderDashboard();}
+function setRepPeriod(p,btn){activeRepPeriod=p;document.querySelectorAll('#repPeriodRow .period-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderReports();}
+
+function populateSelects(){
+  const src=allSrc(),cats=allCat();
+  ['incSource'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const c=el.value;el.innerHTML=src.map(s=>`<option>${s}</option>`).join('');if(src.includes(c))el.value=c;});
+  ['expCat'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const c=el.value;el.innerHTML=cats.map(s=>`<option>${s}</option>`).join('');if(cats.includes(c))el.value=c;});
+}
+
+function updateLiveEarnPerMile(){
+  const amt=parseFloat(document.getElementById('incAmt').value)||0;
+  const miles=parseFloat(document.getElementById('incMiles').value)||0;
+  const box=document.getElementById('incEarnPerMileBox');
+  const lbl=document.getElementById('incEarnPerMile');
+  if(amt>0&&miles>0){box.style.display='block';lbl.textContent='$'+(amt/miles).toFixed(2)+'/mi';}
+  else{box.style.display='none';lbl.textContent='—';}
+}
+
+// ============================================================
+// ADD ENTRIES
+// ============================================================
+function addIncome(){
+  const amt=parseFloat(document.getElementById('incAmt').value),date=document.getElementById('incDate').value,source=document.getElementById('incSource').value,note=document.getElementById('incNote').value.trim();
+  const milesRaw=document.getElementById('incMiles').value;
+  const miles=milesRaw!==''?parseFloat(milesRaw):null;
+  if(!amt||!date){showToast('⚠️ Enter amount & date',true);return;}
+  db.income.push({id:Date.now(),amount:amt,date,source,note,miles:(miles&&miles>0?miles:null)});save();renderAll();
+  document.getElementById('incAmt').value='';document.getElementById('incNote').value='';document.getElementById('incMiles').value='';
+  document.getElementById('incEarnPerMileBox').style.display='none';document.getElementById('incEarnPerMile').textContent='—';
+  showToast('✅ Income added!');
+}
+function addExpense(){
+  const amt=parseFloat(document.getElementById('expAmt').value),date=document.getElementById('expDate').value,category=document.getElementById('expCat').value,note=document.getElementById('expNote').value.trim();
+  if(!amt||!date){showToast('⚠️ Enter amount & date',true);return;}
+  db.expenses.push({id:Date.now(),amount:amt,date,category,note});save();renderAll();
+  document.getElementById('expAmt').value='';document.getElementById('expNote').value='';showToast('✅ Expense added!');
+}
+function addMileage(){
+  const miles=parseFloat(document.getElementById('mileAmt').value),date=document.getElementById('mileDate').value,type=document.getElementById('mileType').value,note=document.getElementById('mileNote').value.trim();
+  if(!miles||!date){showToast('⚠️ Enter miles & date',true);return;}
+  db.mileage.push({id:Date.now(),miles,date,type,note});save();renderAll();
+  document.getElementById('mileAmt').value='';document.getElementById('mileNote').value='';showToast('✅ Miles logged!');
+}
+function updateOdoCalc(){
+  const s=parseFloat(document.getElementById('odoStart').value),e=parseFloat(document.getElementById('odoEnd').value);
+  const box=document.getElementById('odoResultBox'),lbl=document.getElementById('odoMiles');
+  if(s>0&&e>0&&e>s){const diff=(e-s).toFixed(1);box.style.display='block';lbl.textContent=diff;}
+  else{box.style.display='none';}
+}
+function addOdoMileage(){
+  const s=parseFloat(document.getElementById('odoStart').value),e=parseFloat(document.getElementById('odoEnd').value);
+  const date=document.getElementById('odoDate').value,type=document.getElementById('odoType').value,note=document.getElementById('odoNote').value.trim();
+  if(!s||!e||!date){showToast('⚠️ Enter start, end & date',true);return;}
+  if(e<=s){showToast('⚠️ End reading must be greater than start',true);return;}
+  const miles=parseFloat((e-s).toFixed(1));
+  const fullNote=(note?note+' — ':'')+`Odometer: ${s} → ${e}`;
+  db.mileage.push({id:Date.now(),miles,date,type,note:fullNote});save();renderAll();
+  document.getElementById('odoStart').value='';document.getElementById('odoEnd').value='';
+  document.getElementById('odoNote').value='';document.getElementById('odoResultBox').style.display='none';
+  showToast('✅ Miles logged from odometer!');
+}
+function addInvestment(){
+  const amt=parseFloat(document.getElementById('invAmt').value),date=document.getElementById('invDate').value,type=document.getElementById('invType').value,ticker=document.getElementById('invTicker').value.trim(),note=document.getElementById('invNote').value.trim();
+  if(!amt||!date){showToast('⚠️ Enter amount & date',true);return;}
+  db.investments.push({id:Date.now(),amount:amt,date,type,ticker,note});save();renderAll();
+  document.getElementById('invAmt').value='';document.getElementById('invTicker').value='';document.getElementById('invNote').value='';showToast('✅ Transaction added!');
+}
+function delEntry(type,id){db[type]=db[type].filter(e=>e.id!==id);save();renderAll();showToast('🗑️ Removed');}
+function clearAllData(){if(confirm('Clear ALL data? Cannot be undone.')){db.income=[];db.expenses=[];db.mileage=[];db.investments=[];save();renderAll();showToast('🗑️ Data cleared');}}
+
+// ============================================================
+// BACKUP & RESTORE
+// ============================================================
+function exportBackup(){
+  const backup={version:'dt_v4',exported:new Date().toISOString(),data:db};
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`drivetracking-backup-${today()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ Backup saved to Downloads!');
+  updateBackupInfo();
+}
+
+function importBackup(input){
+  const file=input.files[0];
+  if(!file)return;
+  if(!confirm('This will REPLACE all your current data with the backup. Continue?')){input.value='';return;}
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const parsed=JSON.parse(e.target.result);
+      const data=parsed.data||parsed; // support both wrapped and raw formats
+      if(!data.income&&!data.expenses){showToast('⚠️ Invalid backup file',true);return;}
+      db={income:[],expenses:[],mileage:[],investments:[],events:[],notes:[],customSources:[],customCategories:[],...data};
+      save();renderAll();
+      showToast('✅ Backup restored successfully!');
+      updateBackupInfo();
+    }catch(err){showToast('⚠️ Could not read backup file',true);}
+    input.value='';
+  };
+  r.readAsText(file);
+}
+
+function updateBackupInfo(){
+  const el=document.getElementById('backupInfo');
+  if(!el)return;
+  const total=db.income.length+db.expenses.length+db.mileage.length+db.investments.length;
+  el.textContent=`${total} entries in current data · Last saved: ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;
+}
+
+// ============================================================
+// GOOGLE SHEETS IMPORT
+// ============================================================
+let sheetsImportData={income:[],expenses:[],mileage:[],skipped:[]};
+
+function showSheetsHelp(){openModal('sheetsHelpModal');}
+
+function parseSheetDate(raw){
+  if(!raw)return null;
+  const s=String(raw).trim();
+  // YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  // MM/DD/YYYY or M/D/YYYY
+  const mdy=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+  if(mdy){const y=mdy[3].length===2?'20'+mdy[3]:mdy[3];return`${y}-${mdy[1].padStart(2,'0')}-${mdy[2].padStart(2,'0')}`;}
+  // MM-DD-YYYY
+  const mdy2=s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+  if(mdy2)return`${mdy2[3]}-${mdy2[1].padStart(2,'0')}-${mdy2[2].padStart(2,'0')}`;
+  // Month DD YYYY or Month DD, YYYY
+  const months={january:'01',february:'02',march:'03',april:'04',may:'05',june:'06',july:'07',august:'08',september:'09',october:'10',november:'11',december:'12',jan:'01',feb:'02',mar:'03',apr:'04',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+  const named=s.match(/^([a-zA-Z]+)\s+(\d{1,2}),?\s*(\d{4})$/);
+  if(named){const m=months[named[1].toLowerCase()];if(m)return`${named[3]}-${m}-${named[2].padStart(2,'0')}`;}
+  // Try native parse as fallback
+  const d=new Date(s);
+  if(!isNaN(d.getTime()))return d.toISOString().slice(0,10);
+  return null;
+}
+
+function detectColumns(headers){
+  const map={date:-1,amount:-1,source:-1,category:-1,miles:-1,note:-1,month:-1};
+  headers.forEach((h,i)=>{
+    const l=h.toLowerCase().trim();
+    if(l.includes('date'))map.date=i;
+    else if(l.includes('month'))map.month=i;
+    else if(l.includes('amount')||l.includes('earning')||l.includes('income')||l==='$'||l.includes('pay'))map.amount=i;
+    else if(l.includes('source')||l.includes('platform')||l.includes('app')||l.includes('company'))map.source=i;
+    else if(l.includes('cat')||l.includes('type')||l.includes('expense')||l.includes('spend'))map.category=i;
+    else if(l.includes('mile')||l.includes('mi '))map.miles=i;
+    else if(l.includes('note')||l.includes('memo')||l.includes('desc')||l.includes('detail'))map.note=i;
+  });
+  return map;
+}
+
+function previewSheetsImport(){
+  const raw=document.getElementById('sheetsInput').value.trim();
+  if(!raw){showToast('⚠️ Paste your sheet data first',true);return;}
+  const headerRowSetting=parseInt(document.getElementById('sheetsHeaderRow').value);
+
+  // Split into rows and cells (tab-separated from Google Sheets copy)
+  const rows=raw.split('\n').map(r=>r.split('\t').map(c=>c.trim()));
+  if(rows.length<2){showToast('⚠️ Not enough data rows',true);return;}
+
+  let headers=[];
+  let dataRows=[];
+
+  if(headerRowSetting===0){
+    // No headers — guess by content
+    headers=rows[0].map((_,i)=>`col${i}`);
+    dataRows=rows;
+  } else {
+    headers=rows[headerRowSetting-1];
+    dataRows=rows.slice(headerRowSetting);
+  }
+
+  const col=detectColumns(headers);
+  const income=[],expenses=[],mileage=[],skipped=[];
+
+  dataRows.forEach((cells,idx)=>{
+    if(cells.every(c=>!c))return; // skip blank rows
+
+    const rawAmt=col.amount>=0?cells[col.amount]||'':'';
+    const rawDate=col.date>=0?cells[col.date]||'':(col.month>=0?cells[col.month]||'':'');
+    const source=col.source>=0?cells[col.source]||'':'';
+    const category=col.category>=0?cells[col.category]||'':'';
+    const rawMiles=col.miles>=0?cells[col.miles]||'':'';
+    const note=col.note>=0?cells[col.note]||'':'';
+
+    const amt=parseFloat(rawAmt.replace(/[$,\s]/g,''));
+    const miles=parseFloat(rawMiles.replace(/[,\s]/g,''));
+    const date=parseSheetDate(rawDate)||today();
+    const hasAmt=!isNaN(amt)&&amt>0;
+    const hasMiles=!isNaN(miles)&&miles>0;
+
+    // Classify row
+    const knownSrc=allSrc().map(x=>x.toLowerCase());
+    const knownCat=allCat().map(x=>x.toLowerCase());
+    const srcMatch=source&&knownSrc.some(s=>source.toLowerCase().includes(s.split(' ')[0].toLowerCase()));
+    const catMatch=category&&knownCat.some(c=>category.toLowerCase().includes(c.split(' ')[0].toLowerCase()));
+
+    if(!hasAmt&&!hasMiles){
+      skipped.push({row:idx+headerRowSetting+1,reason:'No amount or miles found',data:cells.join(' | ')});
+      return;
+    }
+
+    if(hasAmt&&(srcMatch||(!catMatch&&source&&!category))){
+      // Income — has amount and matches a known source, or has source but no category
+      income.push({id:Date.now()+Math.random(),amount:amt,date,source:source||'Other',note,miles:hasMiles?miles:null});
+    } else if(hasAmt&&(catMatch||(category&&!source))){
+      // Expense — has amount and matches a known category, or has category but no source
+      expenses.push({id:Date.now()+Math.random(),amount:amt,date,category:category||'Other',note});
+    } else if(hasMiles&&!hasAmt){
+      // Pure mileage entry
+      mileage.push({id:Date.now()+Math.random(),miles,date,type:'Delivery',note});
+    } else if(hasAmt&&source){
+      // Default to income if has source
+      income.push({id:Date.now()+Math.random(),amount:amt,date,source,note,miles:hasMiles?miles:null});
+    } else if(hasAmt&&category){
+      expenses.push({id:Date.now()+Math.random(),amount:amt,date,category,note});
+    } else {
+      skipped.push({row:idx+headerRowSetting+1,reason:'Could not classify row',data:cells.join(' | ')});
+    }
+  });
+
+  sheetsImportData={income,expenses,mileage,skipped};
+
+  // Build preview UI
+  document.getElementById('sheetsPreviewStats').innerHTML=`
+    <div class="stat-box"><div class="stat-label">💵 Income</div><div class="stat-value green">${income.length}</div></div>
+    <div class="stat-box"><div class="stat-label">💸 Expenses</div><div class="stat-value red">${expenses.length}</div></div>
+    <div class="stat-box"><div class="stat-label">🛣️ Mileage</div><div class="stat-value blue">${mileage.length}</div></div>`;
+
+  // Preview table — show first 10 of each type
+  let tableHtml='';
+  const previewRows=[
+    ...income.slice(0,5).map(e=>({type:'Income',color:'var(--accent2)',date:e.date,desc:e.source,amt:'+'+fmt(e.amount),extra:e.miles?e.miles+' mi':''})),
+    ...expenses.slice(0,5).map(e=>({type:'Expense',color:'var(--danger)',date:e.date,desc:e.category,amt:'-'+fmt(e.amount),extra:''})),
+    ...mileage.slice(0,5).map(e=>({type:'Mileage',color:'var(--blue)',date:e.date,desc:e.type,amt:e.miles+' mi',extra:''}))
+  ];
+  if(previewRows.length){
+    tableHtml=`<table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:var(--surface2)"><th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--muted)">TYPE</th><th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--muted)">DATE</th><th style="padding:6px 8px;text-align:left;font-size:10px;color:var(--muted)">SOURCE/CAT</th><th style="padding:6px 8px;text-align:right;font-size:10px;color:var(--muted)">AMOUNT</th></tr></thead>
+      <tbody>${previewRows.map(r=>`<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 8px;font-size:11px;color:${r.color};font-weight:700">${r.type}</td><td style="padding:6px 8px;font-size:11px;color:var(--muted2)">${r.date}</td><td style="padding:6px 8px;font-size:11px">${r.desc}</td><td style="padding:6px 8px;font-size:11px;font-weight:700;color:${r.color};text-align:right">${r.amt}</td></tr>`).join('')}
+      </tbody></table>`;
+    if(income.length+expenses.length+mileage.length>15)tableHtml+=`<div style="text-align:center;font-size:11px;color:var(--muted);margin-top:6px">...and ${income.length+expenses.length+mileage.length-15} more rows</div>`;
+  }
+  document.getElementById('sheetsPreviewTable').innerHTML=tableHtml;
+
+  // Warnings
+  let warnHtml='';
+  if(skipped.length){
+    warnHtml=`<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:9px;padding:10px 12px">
+      <div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:6px">⚠️ ${skipped.length} row(s) could not be imported</div>
+      ${skipped.slice(0,3).map(s=>`<div style="font-size:10.5px;color:var(--muted2);margin-bottom:3px">Row ${s.row}: ${s.reason}</div>`).join('')}
+      ${skipped.length>3?`<div style="font-size:10.5px;color:var(--muted)">...and ${skipped.length-3} more</div>`:''}
+    </div>`;
+  }
+  if(col.date<0&&col.month<0)warnHtml+=`<div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:9px;padding:10px 12px;margin-top:8px"><div style="font-size:11px;color:var(--accent)">⚠️ No date column detected — today's date was used for all rows</div></div>`;
+  document.getElementById('sheetsWarnings').innerHTML=warnHtml;
+
+  openModal('sheetsModal');
+}
+
+function confirmSheetsImport(){
+  const {income,expenses,mileage}=sheetsImportData;
+  db.income.push(...income);
+  db.expenses.push(...expenses);
+  db.mileage.push(...mileage);
+  save();renderAll();
+  closeModal('sheetsModal');
+  document.getElementById('sheetsInput').value='';
+  showToast(`✅ Imported ${income.length+expenses.length+mileage.length} entries!`);
+}
+
+// ============================================================
+// EDIT ENTRIES
+// ============================================================
+let editState={type:null,id:null};
+
+function openEdit(type,id){
+  editState={type,id};
+  // hide all edit sections
+  ['editIncome','editExpense','editMileage','editInvestment'].forEach(s=>document.getElementById(s).style.display='none');
+
+  if(type==='income'){
+    const e=db.income.find(x=>x.id===id);if(!e)return;
+    document.getElementById('editModalTitle').textContent='✏️ Edit Income';
+    document.getElementById('editIncome').style.display='block';
+    // populate source select
+    const sel=document.getElementById('eIncSource');
+    sel.innerHTML=allSrc().map(s=>`<option>${s}</option>`).join('');
+    sel.value=e.source;
+    document.getElementById('eIncAmt').value=e.amount;
+    document.getElementById('eIncDate').value=e.date;
+    document.getElementById('eIncMiles').value=e.miles||'';
+    document.getElementById('eIncNote').value=e.note||'';
+  } else if(type==='expenses'){
+    const e=db.expenses.find(x=>x.id===id);if(!e)return;
+    document.getElementById('editModalTitle').textContent='✏️ Edit Expense';
+    document.getElementById('editExpense').style.display='block';
+    const sel=document.getElementById('eExpCat');
+    sel.innerHTML=allCat().map(c=>`<option>${c}</option>`).join('');
+    sel.value=e.category;
+    document.getElementById('eExpAmt').value=e.amount;
+    document.getElementById('eExpDate').value=e.date;
+    document.getElementById('eExpNote').value=e.note||'';
+  } else if(type==='mileage'){
+    const e=db.mileage.find(x=>x.id===id);if(!e)return;
+    document.getElementById('editModalTitle').textContent='✏️ Edit Mileage';
+    document.getElementById('editMileage').style.display='block';
+    document.getElementById('eMileAmt').value=e.miles;
+    document.getElementById('eMileDate').value=e.date;
+    document.getElementById('eMileType').value=e.type;
+    document.getElementById('eMileNote').value=e.note||'';
+  } else if(type==='investments'){
+    const e=db.investments.find(x=>x.id===id);if(!e)return;
+    document.getElementById('editModalTitle').textContent='✏️ Edit Investment';
+    document.getElementById('editInvestment').style.display='block';
+    document.getElementById('eInvAmt').value=e.amount;
+    document.getElementById('eInvDate').value=e.date;
+    document.getElementById('eInvType').value=e.type;
+    document.getElementById('eInvTicker').value=e.ticker||'';
+    document.getElementById('eInvNote').value=e.note||'';
+  }
+  openModal('editModal');
+}
+
+function saveEdit(){
+  const {type,id}=editState;
+  if(type==='income'){
+    const e=db.income.find(x=>x.id===id);if(!e)return;
+    const amt=parseFloat(document.getElementById('eIncAmt').value);
+    const date=document.getElementById('eIncDate').value;
+    if(!amt||!date){showToast('⚠️ Amount & date required',true);return;}
+    e.amount=amt;e.date=date;
+    e.source=document.getElementById('eIncSource').value;
+    const m=parseFloat(document.getElementById('eIncMiles').value);
+    e.miles=(m>0?m:null);
+    e.note=document.getElementById('eIncNote').value.trim();
+  } else if(type==='expenses'){
+    const e=db.expenses.find(x=>x.id===id);if(!e)return;
+    const amt=parseFloat(document.getElementById('eExpAmt').value);
+    const date=document.getElementById('eExpDate').value;
+    if(!amt||!date){showToast('⚠️ Amount & date required',true);return;}
+    e.amount=amt;e.date=date;
+    e.category=document.getElementById('eExpCat').value;
+    e.note=document.getElementById('eExpNote').value.trim();
+  } else if(type==='mileage'){
+    const e=db.mileage.find(x=>x.id===id);if(!e)return;
+    const miles=parseFloat(document.getElementById('eMileAmt').value);
+    const date=document.getElementById('eMileDate').value;
+    if(!miles||!date){showToast('⚠️ Miles & date required',true);return;}
+    e.miles=miles;e.date=date;
+    e.type=document.getElementById('eMileType').value;
+    e.note=document.getElementById('eMileNote').value.trim();
+  } else if(type==='investments'){
+    const e=db.investments.find(x=>x.id===id);if(!e)return;
+    const amt=parseFloat(document.getElementById('eInvAmt').value);
+    const date=document.getElementById('eInvDate').value;
+    if(!amt||!date){showToast('⚠️ Amount & date required',true);return;}
+    e.amount=amt;e.date=date;
+    e.type=document.getElementById('eInvType').value;
+    e.ticker=document.getElementById('eInvTicker').value.trim();
+    e.note=document.getElementById('eInvNote').value.trim();
+  }
+  save();renderAll();closeModal('editModal');showToast('✅ Entry updated!');
+}
+
+function deleteFromEdit(){
+  const {type,id}=editState;
+  if(!confirm('Delete this entry?'))return;
+  db[type]=db[type].filter(e=>e.id!==id);
+  save();renderAll();closeModal('editModal');showToast('🗑️ Entry deleted');
+}
+
+// ============================================================
+// CUSTOM SOURCES & CATEGORIES
+// ============================================================
+function addCustomSrc(){const v=document.getElementById('newSrc').value.trim();if(!v){showToast('Enter a name',true);return;}if(allSrc().map(x=>x.toLowerCase()).includes(v.toLowerCase())){showToast('Already exists',true);return;}db.customSources.push(v);save();populateSelects();renderSettings();document.getElementById('newSrc').value='';showToast('✅ Added!');}
+function remSrc(s){db.customSources=db.customSources.filter(x=>x!==s);save();populateSelects();renderSettings();}
+function addCustomCat(){const v=document.getElementById('newCat').value.trim();if(!v){showToast('Enter a name',true);return;}if(allCat().map(x=>x.toLowerCase()).includes(v.toLowerCase())){showToast('Already exists',true);return;}db.customCategories.push(v);save();populateSelects();renderSettings();document.getElementById('newCat').value='';showToast('✅ Added!');}
+function remCat(c){db.customCategories=db.customCategories.filter(x=>x!==c);save();populateSelects();renderSettings();}
+
+function quickAddSrc(){
+  const v=document.getElementById('quickSrcInput').value.trim();
+  if(!v){showToast('Enter a source name',true);return;}
+  if(allSrc().map(x=>x.toLowerCase()).includes(v.toLowerCase())){showToast('Already exists',true);return;}
+  db.customSources.push(v);save();populateSelects();renderSettings();
+  document.getElementById('quickSrcInput').value='';
+  document.getElementById('addSrcInline').style.display='none';
+  // select the new source
+  const sel=document.getElementById('incSource');
+  sel.innerHTML=allSrc().map(s=>`<option>${s}</option>`).join('');
+  sel.value=v;
+  showToast('✅ Source added & selected!');
+}
+function quickAddCat(){
+  const v=document.getElementById('quickCatInput').value.trim();
+  if(!v){showToast('Enter a category name',true);return;}
+  if(allCat().map(x=>x.toLowerCase()).includes(v.toLowerCase())){showToast('Already exists',true);return;}
+  db.customCategories.push(v);save();populateSelects();renderSettings();
+  document.getElementById('quickCatInput').value='';
+  document.getElementById('addCatInline').style.display='none';
+  // select the new category
+  const sel=document.getElementById('expCat');
+  sel.innerHTML=allCat().map(c=>`<option>${c}</option>`).join('');
+  sel.value=v;
+  showToast('✅ Category added & selected!');
+}
+
+// ============================================================
+// NOTES
+// ============================================================
+function addNote(){
+  const title=document.getElementById('noteTitle').value.trim(),body=document.getElementById('noteBody').value.trim(),tag=document.getElementById('noteTag').value;
+  if(!title&&!body){showToast('⚠️ Enter title or content',true);return;}
+  db.notes.unshift({id:Date.now(),title,body,tag,ts:nowTs(),checks:{}});
+  save();renderNotes();
+  document.getElementById('noteTitle').value='';document.getElementById('noteBody').value='';showToast('✅ Note saved!');
+}
+function delNote(id){db.notes=db.notes.filter(n=>n.id!==id);save();renderNotes();}
+function toggleCheck(noteId,lineIdx){
+  const n=db.notes.find(x=>x.id===noteId);if(!n)return;
+  if(!n.checks)n.checks={};
+  n.checks[lineIdx]=!n.checks[lineIdx];
+  save();renderNotes();
+}
+const TAG_LABELS={general:'📌 General',shopping:'🛒 Shopping',work:'💼 Work',personal:'🧍 Personal'};
+const TAG_CSS={shopping:'tag-shopping',work:'tag-work',personal:'tag-personal',general:'tag-general'};
+
+function renderNotes(){
+  const el=document.getElementById('noteList');
+  if(!db.notes.length){el.innerHTML='<div class="empty"><div class="icon">📝</div>No notes yet. Create your first note above.</div>';return;}
+  el.innerHTML=db.notes.map(n=>{
+    const lines=n.body?n.body.split('\n'):[];
+    const isList=lines.some(l=>l.match(/^[-•*]\s/));
+    let bodyHtml='';
+    if(isList){
+      bodyHtml='<div style="margin-top:8px">'+lines.map((l,i)=>{
+        const isItem=l.match(/^[-•*]\s/);
+        if(isItem){const text=l.replace(/^[-•*]\s/,''),checked=n.checks&&n.checks[i];return`<div class="check-item"><input type="checkbox" ${checked?'checked':''} onchange="toggleCheck(${n.id},${i})"><span class="${checked?'done':''}">${text}</span></div>`;}
+        return l?`<div style="font-size:12.5px;color:var(--muted2);margin:4px 0">${l}</div>`:'';
+      }).join('')+'</div>';
+    }else{bodyHtml=n.body?`<div class="note-card-body">${n.body}</div>`:''; }
+    return`<div class="note-card">
+      <button class="note-del" onclick="delNote(${n.id})">✕</button>
+      ${n.title?`<div class="note-card-title">${n.title}</div>`:''}
+      <span class="note-tag ${TAG_CSS[n.tag]||'tag-general'}">${TAG_LABELS[n.tag]||n.tag}</span>
+      ${bodyHtml}
+      <div class="note-card-ts">📅 ${n.ts}</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),selectedDate=today();
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+
+function renderCalendar(){
+  const days=['Mo','Tu','We','Th','Fr','Sa','Su'];
+  document.getElementById('calDayNames').innerHTML=days.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+  document.getElementById('calMonthLabel').textContent=new Date(calYear,calMonth).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const offset=(firstDay===0?6:firstDay-1);
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  const t=today();
+  let cells='';
+  for(let i=0;i<offset;i++){const d=prevDays-offset+i+1;cells+=`<div class="cal-day other-month" style="color:var(--muted)">${d}</div>`;}
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evs=db.events.filter(e=>e.date===ds);
+    const hasApt=evs.some(e=>e.type==='appointment');
+    const hasRem=evs.some(e=>e.type==='reminder'||e.type==='task');
+    let dotClass=hasApt&&hasRem?'has-both':hasApt?'has-event':hasRem?'has-reminder':'';
+    const isToday=ds===t,isSel=ds===selectedDate;
+    cells+=`<div class="cal-day${isToday?' today':''}${isSel?' selected':''}${dotClass?' '+dotClass:''}" onclick="selectDay('${ds}')">${d}</div>`;
+  }
+  const remaining=42-(offset+daysInMonth);
+  for(let i=1;i<=remaining;i++){cells+=`<div class="cal-day other-month" style="color:var(--muted)">${i}</div>`;}
+  document.getElementById('calGrid').innerHTML=cells;
+  renderSelectedDay();
+  renderUpcoming();
+  updateNotifBell();
+}
+
+function selectDay(ds){
+  selectedDate=ds;renderCalendar();
+  document.getElementById('selectedDayCard').style.display='block';
+}
+function openEventModal(){
+  document.getElementById('evDate').value=selectedDate;
+  document.getElementById('evTime').value='';
+  document.getElementById('evTitle').value='';
+  document.getElementById('evNotes').value='';
+  openModal('eventModal');
+}
+function saveEvent(){
+  const title=document.getElementById('evTitle').value.trim(),date=document.getElementById('evDate').value,time=document.getElementById('evTime').value,type=document.getElementById('evType').value,notes=document.getElementById('evNotes').value.trim();
+  if(!title||!date){showToast('⚠️ Enter title & date',true);return;}
+  db.events.push({id:Date.now(),title,date,time,type,notes});
+  save();closeModal('eventModal');renderCalendar();renderDashboard();showToast('✅ Event saved!');
+}
+function delEvent(id){db.events=db.events.filter(e=>e.id!==id);save();renderCalendar();renderDashboard();}
+
+function renderSelectedDay(){
+  const card=document.getElementById('selectedDayCard'),el=document.getElementById('selectedDayEvents');
+  const d=new Date(selectedDate+'T00:00:00');
+  document.getElementById('selectedDayLabel').textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const evs=db.events.filter(e=>e.date===selectedDate).sort((a,b)=>a.time.localeCompare(b.time));
+  if(!evs.length){el.innerHTML='<div style="font-size:12.5px;color:var(--muted);padding:8px 0">No events this day</div>';return;}
+  el.innerHTML=evs.map(e=>`
+    <div class="event-badge ${e.type}" style="justify-content:space-between;width:100%;margin-bottom:5px">
+      <div>
+        <strong>${e.time||'All day'}</strong> — ${e.title}
+        ${e.notes?`<div style="font-size:10.5px;opacity:0.75;margin-top:2px">${e.notes}</div>`:''}
+      </div>
+      <button onclick="delEvent(${e.id})" style="background:none;border:none;color:inherit;cursor:pointer;font-size:14px;opacity:0.6">✕</button>
+    </div>`).join('');
+}
+
+function renderUpcoming(){
+  const el=document.getElementById('upcomingList');
+  const t=today();
+  const futureDate=new Date();futureDate.setDate(futureDate.getDate()+14);
+  const fd=futureDate.toISOString().slice(0,10);
+  const evs=db.events.filter(e=>e.date>=t&&e.date<=fd).sort((a,b)=>a.date===b.date?a.time.localeCompare(b.time):a.date.localeCompare(b.date)).slice(0,8);
+  if(!evs.length){el.innerHTML='<div class="empty"><div class="icon">📅</div>No upcoming events</div>';return;}
+  el.innerHTML=evs.map(e=>{const d=new Date(e.date+'T00:00:00');const label=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});return`<div class="event-badge ${e.type}" style="justify-content:space-between;width:100%;margin-bottom:6px"><div><strong>${label}${e.time?' '+e.time:''}</strong> — ${e.title}</div><button onclick="delEvent(${e.id})" style="background:none;border:none;color:inherit;cursor:pointer">✕</button></div>`;}).join('');
+}
+
+function updateNotifBell(){
+  const t=today();const due=db.events.filter(e=>e.date===t).length;
+  document.getElementById('notifDot').style.display=due>0?'block':'none';
+}
+
+// ============================================================
+// INVESTMENTS RENDER
+// ============================================================
+function renderInvestments(){
+  const all=db.investments;
+  const inTypes=['deposit','dividend','gain'];
+  const outTypes=['withdrawal','loss','fee'];
+  const totalIn=sum(all.filter(e=>inTypes.includes(e.type)),'amount');
+  const totalOut=sum(all.filter(e=>outTypes.includes(e.type)),'amount');
+  const net=totalIn-totalOut;
+  document.getElementById('invTotalIn').textContent=fmt(totalIn);
+  document.getElementById('invTotalOut').textContent=fmt(totalOut);
+  const nEl=document.getElementById('invNet');nEl.textContent=fmtS(net);nEl.style.color=net>=0?'var(--purple)':'var(--danger)';
+
+  // By asset
+  const assets={};
+  all.forEach(e=>{
+    const k=e.ticker||'Other';
+    if(!assets[k])assets[k]={in:0,out:0};
+    if(inTypes.includes(e.type))assets[k].in+=e.amount;
+    else assets[k].out+=e.amount;
+  });
+  const aEl=document.getElementById('invByAsset');
+  if(!Object.keys(assets).length){aEl.innerHTML='<div class="empty"><div class="icon">📈</div>No investments yet</div>';return;}
+  aEl.innerHTML=Object.entries(assets).map(([k,v])=>{const n=v.in-v.out;return`<div class="cat-row"><div class="cat-name"><span class="inv-ticker" style="font-size:14px">${k}</span></div><div style="text-align:right"><div class="inv-change" style="color:${n>=0?'var(--accent2)':'var(--danger)'}">${fmtS(n)}</div><div style="font-size:10px;color:var(--muted)">In: ${fmt(v.in)} | Out: ${fmt(v.out)}</div></div></div>`;}).join('');
+
+  // List
+  const sorted=[...all].sort((a,b)=>b.date.localeCompare(a.date));
+  const el=document.getElementById('invList');
+  if(!sorted.length){el.innerHTML='<div class="empty"><div class="icon">📈</div>No transactions yet</div>';return;}
+  el.innerHTML=sorted.map(e=>`<div class="entry-item"><div class="e-left"><div class="e-cat">${INV_ICONS[e.type]||''} ${e.type} ${e.ticker?'— '+e.ticker:''}</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right"><div class="e-amt" style="color:${INV_COLORS[e.type]||'var(--text)'}">${['withdrawal','loss','fee'].includes(e.type)?'-':'+'}${fmt(e.amount)}</div><button class="del-btn" onclick="openEdit('investments',${e.id})" style="color:var(--accent);border-color:rgba(245,158,11,0.3)">✏️</button></div></div>`).join('');
+}
+
+// ============================================================
+// RECEIPT SCANNER
+// ============================================================
+let rcptMode='expense',rcptB64=null;
+function openReceiptModal(mode){
+  rcptMode=mode;
+  document.getElementById('rcptModal').classList.add('open');
+  document.getElementById('rcptPreview').style.display='none';
+  document.getElementById('scanStatus').style.display='none';
+  document.getElementById('scanResult').style.display='none';
+  document.getElementById('rcptDrop').style.display='block';
+  document.getElementById('fileInput').value='';document.getElementById('cameraInput').value='';
+  rcptB64=null;
+  const sc=document.getElementById('sCat');
+  const list=mode==='income'?allSrc():allCat();
+  sc.innerHTML=list.map(x=>`<option>${x}</option>`).join('');
+  document.getElementById('sCatLbl').textContent=mode==='income'?'Income Source':'Expense Category';
+}
+function handleRcptFile(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{const u=e.target.result;const pr=document.getElementById('rcptPreview');pr.src=u;pr.style.display='block';document.getElementById('rcptDrop').style.display='none';rcptB64=u.split(',')[1];scanWithAI(rcptB64,file.type||'image/jpeg');};
+  r.readAsDataURL(file);
+}
+async function scanWithAI(b64,mt){
+  document.getElementById('scanStatus').style.display='block';document.getElementById('scanResult').style.display='none';
+  const list=rcptMode==='income'?allSrc():allCat();
+  const prompt=`Analyze this receipt image for a delivery driver finance app. Return ONLY valid JSON (no markdown):\n{"amount":<number or null>,"date":"<YYYY-MM-DD or ${today()}>","merchant":"<name>","category_hint":"<best from: ${list.join(', ')}>","notes":"<1 sentence summary>"}`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:prompt}]}]})});
+    const data=await res.json();
+    document.getElementById('scanStatus').style.display='none';
+    if(data.error){showToast('AI error: '+data.error.message,true);return;}
+    let p={};
+    try{p=JSON.parse((data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim());}catch(e){p={amount:null,date:today(),merchant:'',category_hint:'',notes:''};}
+    document.getElementById('sAmt').value=p.amount||'';
+    document.getElementById('sDate').value=p.date||today();
+    document.getElementById('sNote').value=p.merchant||'';
+    document.getElementById('sRaw').value=p.notes||'';
+    const sc=document.getElementById('sCat');const hint=(p.category_hint||'').toLowerCase();
+    const match=list.find(x=>{const xl=x.toLowerCase();return xl===hint||xl.includes(hint.split(' ')[0])||hint.includes(xl.split(' ')[0]);});
+    if(match)sc.value=match;
+    document.getElementById('scanResult').style.display='block';
+  }catch(err){document.getElementById('scanStatus').style.display='none';showToast('⚠️ Could not scan receipt',true);}
+}
+function confirmScan(){
+  const amt=parseFloat(document.getElementById('sAmt').value),date=document.getElementById('sDate').value,cat=document.getElementById('sCat').value,note=document.getElementById('sNote').value.trim();
+  if(!amt||!date){showToast('⚠️ Enter amount & date',true);return;}
+  const img=rcptB64?'data:image/jpeg;base64,'+rcptB64:null;
+  if(rcptMode==='income')db.income.push({id:Date.now(),amount:amt,date,source:cat,note,receipt:img});
+  else db.expenses.push({id:Date.now(),amount:amt,date,category:cat,note,receipt:img});
+  save();renderAll();closeModal('rcptModal');showToast('✅ Saved from receipt!');
+}
+function viewReceipt(src){const w=window.open('','_blank');w.document.write(`<html><body style="margin:0;background:#000"><img src="${src}" style="width:100%;max-width:600px"></body></html>`);}
+
+// ============================================================
+// REPORTS — PDF, CSV, SHARE
+// ============================================================
+function buildReportText(period){
+  const p=period||activeRepPeriod;
+  const inc=filterByP(db.income,p),exp=filterByP(db.expenses,p),mil=filterByP(db.mileage,p),inv=db.investments;
+  const ti=sum(inc,'amount'),te=sum(exp,'amount'),tm=sum(mil,'miles'),net=ti-te;
+  const tInv=sum(inv.filter(e=>['deposit','dividend','gain'].includes(e.type)),'amount')-sum(inv.filter(e=>['withdrawal','loss','fee'].includes(e.type)),'amount');
+  const now=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const pLabel={day:'Today',week:'This Week',month:'This Month',year:'This Year',all:'All Time'}[p]||p;
+  let txt=`DRIVE$TRACK — FINANCIAL REPORT\n`;
+  txt+=`Generated: ${now}\nPeriod: ${pLabel}\n`;
+  txt+=`${'='.repeat(40)}\n\n`;
+  txt+=`SUMMARY\n${'-'.repeat(30)}\n`;
+  txt+=`Total Income:    ${fmt(ti)}\nTotal Expenses:  ${fmt(te)}\nNet Earnings:    ${fmtS(net)}\nTotal Miles:     ${tm.toFixed(1)} mi\nEst Tax Deduct:  ${fmt(tm*0.70)}\nInvestment Net:  ${fmtS(tInv)}\n\n`;
+  txt+=`INCOME BREAKDOWN (${inc.length} entries)\n${'-'.repeat(30)}\n`;
+  const src={};inc.forEach(e=>{src[e.source]=(src[e.source]||0)+e.amount;});
+  Object.entries(src).sort((a,b)=>b[1]-a[1]).forEach(([s,a])=>txt+=`  ${s}: ${fmt(a)}\n`);
+  txt+=`\nEXPENSE BREAKDOWN (${exp.length} entries)\n${'-'.repeat(30)}\n`;
+  const cats={};exp.forEach(e=>{cats[e.category]=(cats[e.category]||0)+e.amount;});
+  Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([c,a])=>txt+=`  ${c}: ${fmt(a)}\n`);
+  txt+=`\nINCOME LOG\n${'-'.repeat(30)}\n`;
+  inc.forEach(e=>txt+=`  ${e.date}  ${(e.source||'').padEnd(18)}  +${fmt(e.amount)}${e.miles?'  🛣️ '+e.miles+' mi ($'+(e.amount/e.miles).toFixed(2)+'/mi)':''}  ${e.note||''}\n`);
+  txt+=`\nEXPENSE LOG\n${'-'.repeat(30)}\n`;
+  exp.forEach(e=>txt+=`  ${e.date}  ${(e.category||'').padEnd(18)}  -${fmt(e.amount)}  ${e.note||''}\n`);
+  txt+=`\nMILEAGE LOG\n${'-'.repeat(30)}\n`;
+  mil.forEach(e=>txt+=`  ${e.date}  ${(e.type||'').padEnd(10)}  ${e.miles} mi  ${e.note||''}\n`);
+  txt+=`\n${'-'.repeat(40)}\nDrive$Tracking — Your Delivery Finance Tracker\n`;
+  return txt;
+}
+
+function buildReportCSV(){
+  const p=activeRepPeriod;
+  const inc=filterByP(db.income,p),exp=filterByP(db.expenses,p),mil=filterByP(db.mileage,p);
+  let csv='Type,Date,Category/Source,Amount,Miles,Note\n';
+  inc.forEach(e=>csv+=`Income,${e.date},"${e.source}",${e.amount},${e.miles||''},"${e.note||''}"\n`);
+  exp.forEach(e=>csv+=`Expense,${e.date},"${e.category}",${e.amount},,"${e.note||''}"\n`);
+  mil.forEach(e=>csv+=`Mileage,${e.date},"${e.type}",${e.miles},,"${e.note||''}"\n`);
+  db.investments.forEach(e=>csv+=`Investment,${e.date},"${e.type} - ${e.ticker||''}",${e.amount},,"${e.note||''}"\n`);
+  return csv;
+}
+
+function buildPDFHtml(){
+  const p=activeRepPeriod;
+  const inc=filterByP(db.income,p),exp=filterByP(db.expenses,p),mil=filterByP(db.mileage,p),inv=db.investments;
+  const ti=sum(inc,'amount'),te=sum(exp,'amount');
+  const tmS=sum(mil,'miles'),tmI=inc.reduce((a,b)=>a+(b.miles||0),0),tm=tmS+tmI;
+  const net=ti-te;
+  const tInvIn=sum(inv.filter(e=>['deposit','dividend','gain'].includes(e.type)),'amount');
+  const tInvOut=sum(inv.filter(e=>['withdrawal','loss','fee'].includes(e.type)),'amount');
+  const tInv=tInvIn-tInvOut;
+  const now=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const pLabel={day:'Today',week:'This Week',month:'This Month',year:'This Year',all:'All Time'}[p]||p;
+
+  // Income by source
+  const srcMap={};inc.forEach(e=>{srcMap[e.source]=(srcMap[e.source]||0)+e.amount;});
+  const srcRows=Object.entries(srcMap).sort((a,b)=>b[1]-a[1])
+    .map(([s,a])=>`<tr><td>${s}</td><td class="amt green">${fmt(a)}</td><td class="pct">${ti>0?((a/ti)*100).toFixed(0)+'%':''}</td></tr>`).join('');
+
+  // Expense by category
+  const catMap={};exp.forEach(e=>{catMap[e.category]=(catMap[e.category]||0)+e.amount;});
+  const catRows=Object.entries(catMap).sort((a,b)=>b[1]-a[1])
+    .map(([c,a])=>`<tr><td>${c}</td><td class="amt red">${fmt(a)}</td><td class="pct">${te>0?((a/te)*100).toFixed(0)+'%':''}</td></tr>`).join('');
+
+  // Income log
+  const incRows=inc.sort((a,b)=>b.date.localeCompare(a.date))
+    .map(e=>`<tr><td>${e.date}</td><td>${e.source}</td><td class="amt green">+${fmt(e.amount)}</td><td>${e.miles?e.miles+' mi':''}</td><td>${e.miles?'$'+(e.amount/e.miles).toFixed(2)+'/mi':''}</td><td>${e.note||''}</td></tr>`).join('');
+
+  // Expense log
+  const expRows=exp.sort((a,b)=>b.date.localeCompare(a.date))
+    .map(e=>`<tr><td>${e.date}</td><td>${e.category}</td><td class="amt red">-${fmt(e.amount)}</td><td colspan="2">${e.note||''}</td></tr>`).join('');
+
+  // Mileage log
+  const milRows=[...mil].sort((a,b)=>b.date.localeCompare(a.date))
+    .map(e=>`<tr><td>${e.date}</td><td>${e.type}</td><td class="amt blue">${e.miles} mi</td><td colspan="2">${e.note||''}</td></tr>`).join('');
+
+  // Investments log
+  const invRows=[...inv].sort((a,b)=>b.date.localeCompare(a.date))
+    .map(e=>`<tr><td>${e.date}</td><td>${e.type}${e.ticker?' — '+e.ticker:''}</td><td class="amt" style="color:${['withdrawal','loss','fee'].includes(e.type)?'#c0392b':'#1a7a4a'}">${['withdrawal','loss','fee'].includes(e.type)?'-':'+'}${fmt(e.amount)}</td><td colspan="2">${e.note||''}</td></tr>`).join('');
+
+  return`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>Drive$Tracking Report — ${pLabel}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:#1a1a2e;background:#fff;padding:32px;}
+  @media print{body{padding:16px;}@page{margin:1.5cm;size:A4;}}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #f59e0b;padding-bottom:14px;margin-bottom:20px;}
+  .logo{font-size:26px;font-weight:900;color:#0f1a28;letter-spacing:-0.5px;}
+  .logo span{color:#f59e0b;}
+  .meta{text-align:right;color:#555;font-size:11px;line-height:1.7;}
+  .period-badge{display:inline-block;background:#f59e0b;color:#000;font-weight:700;font-size:11px;padding:3px 10px;border-radius:12px;margin-top:4px;}
+  h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#0f1a28;margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid #e0e0e0;}
+  .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+  .stat{background:#f8f9fa;border:1px solid #e9ecef;border-radius:8px;padding:12px 14px;}
+  .stat-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:0.8px;color:#777;margin-bottom:3px;}
+  .stat-val{font-size:20px;font-weight:800;}
+  .green{color:#0d6e3f;}.red{color:#b91c1c;}.blue{color:#1d4ed8;}.purple{color:#6d28d9;}.amber{color:#b45309;}
+  .net-box{background:linear-gradient(135deg,#0f2318,#0a0f1a);color:#fff;border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .net-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6);}
+  .net-box .val{font-size:28px;font-weight:900;}
+  table{width:100%;border-collapse:collapse;margin-bottom:6px;font-size:11.5px;}
+  th{background:#0f1a28;color:#fff;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:0.6px;}
+  td{padding:6px 10px;border-bottom:1px solid #f0f0f0;}
+  tr:nth-child(even) td{background:#fafafa;}
+  .amt{font-weight:700;text-align:right;white-space:nowrap;}
+  .pct{color:#888;text-align:right;font-size:10.5px;}
+  .no-data{color:#999;font-style:italic;padding:10px 0;}
+  .footer{margin-top:28px;border-top:1px solid #e0e0e0;padding-top:10px;text-align:center;color:#aaa;font-size:10px;}
+  .tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:9.5px;font-weight:700;}
+  .tag-inc{background:#d1fae5;color:#065f46;}
+  .tag-exp{background:#fee2e2;color:#991b1b;}
+  .tag-mil{background:#dbeafe;color:#1e40af;}
+  .tag-inv{background:#ede9fe;color:#5b21b6;}
+  .page-break{page-break-before:always;}
+</style></head><body>
+
+<div class="header">
+  <div>
+    <div class="logo">Drive<span>$</span>Tracking</div>
+    <div style="font-size:11px;color:#555;margin-top:4px">Delivery Driver Financial Report</div>
+  </div>
+  <div class="meta">
+    <div>${now}</div>
+    <div class="period-badge">${pLabel}</div>
+  </div>
+</div>
+
+<div class="net-box">
+  <div><div class="lbl">Net Earnings</div><div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">Total Income minus Total Expenses</div></div>
+  <div class="val" style="color:${net>=0?'#4ade80':'#f87171'}">${fmtS(net)}</div>
+</div>
+
+<div class="summary-grid">
+  <div class="stat"><div class="stat-lbl">💵 Total Income</div><div class="stat-val green">${fmt(ti)}</div></div>
+  <div class="stat"><div class="stat-lbl">💸 Total Expenses</div><div class="stat-val red">${fmt(te)}</div></div>
+  <div class="stat"><div class="stat-lbl">🛣️ Total Miles</div><div class="stat-val blue">${tm.toFixed(1)} mi</div></div>
+  <div class="stat"><div class="stat-lbl">📈 Investment Net</div><div class="stat-val purple">${fmtS(tInv)}</div></div>
+  <div class="stat"><div class="stat-lbl">🧾 IRS Deduction Est.</div><div class="stat-val amber">${fmt(tm*0.70)}</div></div>
+  <div class="stat"><div class="stat-lbl">📋 Total Entries</div><div class="stat-val">${inc.length+exp.length+mil.length}</div></div>
+</div>
+
+${srcRows?`<h2>Income by Source</h2>
+<table><thead><tr><th>Source</th><th style="text-align:right">Amount</th><th style="text-align:right">% of Total</th></tr></thead>
+<tbody>${srcRows}</tbody></table>`:''}
+
+${catRows?`<h2>Expenses by Category</h2>
+<table><thead><tr><th>Category</th><th style="text-align:right">Amount</th><th style="text-align:right">% of Total</th></tr></thead>
+<tbody>${catRows}</tbody></table>`:''}
+
+${incRows?`<h2>Income Log <span style="font-weight:400;color:#888">(${inc.length} entries)</span></h2>
+<table><thead><tr><th>Date</th><th>Source</th><th style="text-align:right">Amount</th><th>Miles</th><th>$/Mile</th><th>Note</th></tr></thead>
+<tbody>${incRows}</tbody>
+<tfoot><tr style="background:#f0fdf4"><td colspan="2"><strong>Total</strong></td><td class="amt green">+${fmt(ti)}</td><td>${tm.toFixed(1)} mi</td><td></td><td></td></tr></tfoot>
+</table>`:'<p class="no-data">No income entries for this period.</p>'}
+
+${expRows?`<h2 class="${inc.length>8?'page-break':''}">Expense Log <span style="font-weight:400;color:#888">(${exp.length} entries)</span></h2>
+<table><thead><tr><th>Date</th><th>Category</th><th style="text-align:right">Amount</th><th colspan="2">Note</th></tr></thead>
+<tbody>${expRows}</tbody>
+<tfoot><tr style="background:#fff5f5"><td colspan="2"><strong>Total</strong></td><td class="amt red">-${fmt(te)}</td><td colspan="2"></td></tr></tfoot>
+</table>`:'<p class="no-data">No expense entries for this period.</p>'}
+
+${milRows?`<h2>Mileage Log <span style="font-weight:400;color:#888">(${mil.length} entries)</span></h2>
+<table><thead><tr><th>Date</th><th>Type</th><th style="text-align:right">Miles</th><th colspan="2">Note</th></tr></thead>
+<tbody>${milRows}</tbody></table>`:''}
+
+${invRows?`<h2>Investment Transactions</h2>
+<table><thead><tr><th>Date</th><th>Type / Asset</th><th style="text-align:right">Amount</th><th colspan="2">Note</th></tr></thead>
+<tbody>${invRows}</tbody></table>`:''}
+
+<div class="footer">Drive$Tracking — Generated ${now} &nbsp;|&nbsp; Period: ${pLabel} &nbsp;|&nbsp; drivetracking.app</div>
+</body></html>`;
+}
+
+function downloadPDF(){
+  const html=buildPDFHtml();
+  const win=window.open('','_blank');
+  if(!win){showToast('⚠️ Allow pop-ups to save PDF',true);return;}
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(()=>{
+    win.print();
+    showToast('📄 Choose "Save as PDF" in print dialog');
+  },600);
+}
+
+async function sharePDF(){
+  // Build HTML blob, open in new tab so user can share from browser
+  const html=buildPDFHtml();
+  if(navigator.share){
+    // Share as plain text fallback (PDF sharing needs native app support)
+    const txt=buildReportText();
+    try{
+      await navigator.share({
+        title:`Drive$Tracking Report — ${new Date().toLocaleDateString()}`,
+        text:txt
+      });
+      showToast('✅ Report shared!');
+      return;
+    }catch(e){if(e.name==='AbortError')return;}
+  }
+  // Fallback: open PDF preview in new tab
+  const win=window.open('','_blank');
+  if(!win){showToast('⚠️ Allow pop-ups to preview PDF',true);return;}
+  win.document.write(html+'<script>window.onload=()=>window.print();<\/script>');
+  win.document.close();
+  showToast('📤 Print → Share/Save PDF from print dialog');
+}
+
+function downloadReport(){
+  const csv=buildReportCSV();
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`drivetracking-report-${today()}.csv`;a.click();URL.revokeObjectURL(url);
+  showToast('✅ CSV downloaded!');
+}
+
+async function shareReport(){
+  const txt=buildReportText();
+  if(navigator.share){
+    try{await navigator.share({title:'Drive$Tracking Report',text:txt});showToast('✅ Shared!');}
+    catch(e){if(e.name!=='AbortError')copyReportToClipboard();}
+  }else{copyReportToClipboard();}
+}
+
+function copyReportToClipboard(){
+  const txt=buildReportText();
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>showToast('✅ Copied to clipboard!'));}
+  else{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('✅ Copied!');}
+}
+
+// ============================================================
+// RENDER ALL
+// ============================================================
+function renderAll(){renderDashboard();renderIncome();renderExpenses();renderMileage();renderInvestments();renderCalendar();renderNotes();renderReports();renderSettings();populateSelects();}
+
+function renderDashboard(){
+  const inc=filterByP(db.income,activePeriod),exp=filterByP(db.expenses,activePeriod),mil=filterByP(db.mileage,activePeriod);
+  const ti=sum(inc,'amount'),te=sum(exp,'amount');
+  // Combined miles: standalone mileage entries + miles attached to income entries
+  const tmStandalone=sum(mil,'miles');
+  const tmIncome=inc.reduce((a,b)=>a+(b.miles||0),0);
+  const tm=tmStandalone+tmIncome;
+  const net=ti-te;
+  const inv=db.investments;const tInv=sum(inv.filter(e=>['deposit','dividend','gain'].includes(e.type)),'amount')-sum(inv.filter(e=>['withdrawal','loss','fee'].includes(e.type)),'amount');
+  document.getElementById('dashIncome').textContent=fmt(ti);
+  document.getElementById('dashExpenses').textContent=fmt(te);
+  document.getElementById('dashMiles').textContent=tm.toFixed(1);
+  document.getElementById('dashInvest').textContent=fmtS(tInv);
+  const nEl=document.getElementById('dashNet');nEl.textContent=fmtS(net);nEl.style.color=net>=0?'var(--accent2)':'var(--danger)';
+
+  // Upcoming reminders on dashboard
+  const t=today();const todayEvs=db.events.filter(e=>e.date===t);
+  const urEl=document.getElementById('upcomingReminders');
+  if(todayEvs.length){
+    urEl.innerHTML=`<div class="card" style="border-color:rgba(167,139,250,0.3)"><div class="card-title" style="color:var(--purple)">🔔 Today's Events</div>${todayEvs.map(e=>`<div class="event-badge ${e.type}" style="width:100%;margin-bottom:5px">${e.time?'<strong>'+e.time+'</strong> — ':''} ${e.title}</div>`).join('')}</div>`;
+  }else{urEl.innerHTML='';}
+
+  const all=[...db.income.map(e=>({...e,_t:'income'})),...db.expenses.map(e=>({...e,_t:'expense'})),...db.mileage.map(e=>({...e,_t:'mile'})),...db.investments.map(e=>({...e,_t:'invest'}))].sort((a,b)=>b.id-a.id).slice(0,8);
+  const el=document.getElementById('recentList');
+  if(!all.length){el.innerHTML='<div class="empty"><div class="icon">📋</div>No entries yet</div>';return;}
+  el.innerHTML=all.map(e=>{
+    const thumb=e.receipt?`<img src="${e.receipt}" class="rcpt-thumb" onclick="viewReceipt('${e.receipt}')" title="View receipt">`:'';
+    if(e._t==='income')return`<div class="entry-item"><div class="e-left"><div class="e-cat">${e.source}</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right">${thumb}<div class="e-amt" style="color:var(--accent2)">+${fmt(e.amount)}</div></div></div>`;
+    if(e._t==='expense')return`<div class="entry-item"><div class="e-left"><div class="e-cat">${e.category}</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right">${thumb}<div class="e-amt" style="color:var(--danger)">-${fmt(e.amount)}</div></div></div>`;
+    if(e._t==='invest')return`<div class="entry-item"><div class="e-left"><div class="e-cat">${INV_ICONS[e.type]||''} ${e.ticker||e.type}</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right"><div class="e-amt" style="color:${INV_COLORS[e.type]||'var(--text)'}">${['withdrawal','loss','fee'].includes(e.type)?'-':'+'}${fmt(e.amount)}</div></div></div>`;
+    return`<div class="entry-item"><div class="e-left"><div class="e-cat">${e.type} Trip</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right"><div class="e-amt" style="color:var(--blue)">${e.miles} mi</div></div></div>`;
+  }).join('');
+}
+
+function renderIncome(){
+  const el=document.getElementById('incomeList');
+  const sorted=[...db.income].sort((a,b)=>b.date.localeCompare(a.date));
+
+  // Summary stats
+  const withMiles=db.income.filter(e=>e.miles&&e.miles>0);
+  const totalMiles=withMiles.reduce((a,b)=>a+(b.miles||0),0);
+  const totalAmtWithMiles=withMiles.reduce((a,b)=>a+(b.amount||0),0);
+  document.getElementById('incTotalMiles').textContent=totalMiles.toFixed(1);
+  document.getElementById('incAvgPerMile').textContent=totalMiles>0?'$'+(totalAmtWithMiles/totalMiles).toFixed(2):'—';
+  document.getElementById('incTripsWithMiles').textContent=withMiles.length;
+
+  if(!sorted.length){el.innerHTML='<div class="empty"><div class="icon">💵</div>No income yet</div>';return;}
+  el.innerHTML=sorted.map(e=>{
+    const thumb=e.receipt?`<img src="${e.receipt}" class="rcpt-thumb" onclick="viewReceipt('${e.receipt}')">`:'';
+    const milesBadge=e.miles&&e.miles>0
+      ?`<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:var(--blue);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:3px">🛣️ ${e.miles} mi &nbsp;·&nbsp; $${(e.amount/e.miles).toFixed(2)}/mi</span>`
+      :'';
+    return`<div class="entry-item" style="align-items:flex-start;padding:10px 0">
+      <div class="e-left">
+        <div class="e-cat">${e.source}</div>
+        <div class="e-note">${e.note||'—'}</div>
+        <div class="e-date">${e.date}</div>
+        ${milesBadge}
+      </div>
+      <div class="e-right" style="align-items:flex-start;padding-top:2px">
+        ${thumb}
+        <div class="e-amt" style="color:var(--accent2)">+${fmt(e.amount)}</div>
+        <button class="del-btn" onclick="openEdit('income',${e.id})" style="color:var(--accent);border-color:rgba(245,158,11,0.3)">✏️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderExpenses(){
+  const el=document.getElementById('expenseList');
+  const sorted=[...db.expenses].sort((a,b)=>b.date.localeCompare(a.date));
+  if(!sorted.length){
+    el.innerHTML='<div class="empty"><div class="icon">💸</div>No expenses yet</div>';
+    document.getElementById('expBreakdown').innerHTML='<div class="empty"><div class="icon">💸</div>No expenses yet</div>';return;
+  }
+  el.innerHTML=sorted.map(e=>{const thumb=e.receipt?`<img src="${e.receipt}" class="rcpt-thumb" onclick="viewReceipt('${e.receipt}')">`:'';return`<div class="entry-item"><div class="e-left"><div class="e-cat">${e.category}</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right">${thumb}<div class="e-amt" style="color:var(--danger)">-${fmt(e.amount)}</div><button class="del-btn" onclick="openEdit('expenses',${e.id})" style="color:var(--accent);border-color:rgba(245,158,11,0.3)">✏️</button></div></div>`;}).join('');
+  const cats={};db.expenses.forEach(e=>{cats[e.category]=(cats[e.category]||0)+e.amount;});
+  const total=Object.values(cats).reduce((a,b)=>a+b,0);
+  document.getElementById('expBreakdown').innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,a],i)=>`<div class="cat-row"><div class="cat-name"><span class="dot" style="background:${CAT_COLORS[i%CAT_COLORS.length]}"></span>${c}</div><div><span class="cat-amt">${fmt(a)}</span><span class="cat-pct">${((a/total)*100).toFixed(0)}%</span></div></div>`).join('');
+}
+
+function renderMileage(){
+  const el=document.getElementById('mileList');
+  const sorted=[...db.mileage].sort((a,b)=>b.date.localeCompare(a.date));
+  const t=today(),w=getWeekStart(),m=getMonthStart(),y=getYearStart();
+
+  // Include miles logged directly AND miles attached to income entries
+  const incMiles=(filter)=>db.income.filter(filter).reduce((a,b)=>a+(b.miles||0),0);
+  document.getElementById('mileToday').textContent=(sum(db.mileage.filter(e=>e.date===t),'miles')+incMiles(e=>e.date===t)).toFixed(1);
+  document.getElementById('mileWeek').textContent=(sum(db.mileage.filter(e=>e.date>=w),'miles')+incMiles(e=>e.date>=w)).toFixed(1);
+  document.getElementById('mileMonth').textContent=(sum(db.mileage.filter(e=>e.date>=m),'miles')+incMiles(e=>e.date>=m)).toFixed(1);
+  const yrMiles=sum(db.mileage.filter(e=>e.date>=y),'miles')+incMiles(e=>e.date>=y);
+  document.getElementById('mileYear').textContent=yrMiles.toFixed(1);
+  document.getElementById('taxDed').textContent=fmt(yrMiles*0.70);
+
+  if(!sorted.length){el.innerHTML='<div class="empty"><div class="icon">🛣️</div>No standalone mileage logged.<br><span style="font-size:11px">Miles linked to income entries count in totals above.</span></div>';return;}
+  el.innerHTML=sorted.map(e=>`<div class="entry-item"><div class="e-left"><div class="e-cat">${e.type}</div><div class="e-note">${e.note||'—'}</div><div class="e-date">${e.date}</div></div><div class="e-right"><div class="e-amt" style="color:var(--blue)">${e.miles} mi</div><button class="del-btn" onclick="openEdit('mileage',${e.id})" style="color:var(--accent);border-color:rgba(245,158,11,0.3)">✏️</button></div></div>`).join('');
+}
+
+function renderReports(){
+  const p=activeRepPeriod;
+  const inc=filterByP(db.income,p),exp=filterByP(db.expenses,p),mil=filterByP(db.mileage,p);
+  const ti=sum(inc,'amount'),te=sum(exp,'amount'),tm=sum(mil,'miles'),net=ti-te;
+
+  const src={};inc.forEach(e=>{src[e.source]=(src[e.source]||0)+e.amount;});
+  const sEl=document.getElementById('repIncSrc');
+  sEl.innerHTML=!Object.keys(src).length?'<div class="empty"><div class="icon">📊</div>No data</div>':Object.entries(src).sort((a,b)=>b[1]-a[1]).map(([s,a],i)=>`<div class="cat-row"><div class="cat-name"><span class="dot" style="background:${SRC_COLORS[i%SRC_COLORS.length]}"></span>${s}</div><div class="cat-amt" style="color:var(--accent2)">${fmt(a)}</div></div>`).join('');
+
+  const cats={};exp.forEach(e=>{cats[e.category]=(cats[e.category]||0)+e.amount;});
+  const cEl=document.getElementById('repExpCat');
+  cEl.innerHTML=!Object.keys(cats).length?'<div class="empty"><div class="icon">💸</div>No data</div>':Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,a],i)=>`<div class="cat-row"><div class="cat-name"><span class="dot" style="background:${CAT_COLORS[i%CAT_COLORS.length]}"></span>${c}</div><div class="cat-amt">${fmt(a)}</div></div>`).join('');
+
+  const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);days.push({label:['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()],value:sum(db.income.filter(e=>e.date===ds),'amount'),isToday:i===0});}
+  const mx=Math.max(...days.map(d=>d.value),1);
+  document.getElementById('weeklyChart').innerHTML=days.map(d=>`<div class="bar-wrap"><div class="bar" style="height:${(d.value/mx)*100}%;background:${d.isToday?'var(--accent)':'var(--accent2)'}44;border-top:2px solid ${d.isToday?'var(--accent)':'var(--accent2)'}"></div><div class="bar-lbl" style="color:${d.isToday?'var(--accent)':'var(--muted)'}">${d.label}</div></div>`).join('');
+
+  const invNet=sum(db.investments.filter(e=>['deposit','dividend','gain'].includes(e.type)),'amount')-sum(db.investments.filter(e=>['withdrawal','loss','fee'].includes(e.type)),'amount');
+  document.getElementById('repSummary').innerHTML=`
+    <div class="cat-row"><div class="cat-name">💵 Income</div><div class="cat-amt" style="color:var(--accent2)">${fmt(ti)}</div></div>
+    <div class="cat-row"><div class="cat-name">💸 Expenses</div><div class="cat-amt">${fmt(te)}</div></div>
+    <div class="cat-row"><div class="cat-name">🛣️ Miles</div><div class="cat-amt" style="color:var(--blue)">${tm.toFixed(1)} mi</div></div>
+    <div class="cat-row"><div class="cat-name">📈 Investment Net</div><div class="cat-amt" style="color:var(--purple)">${fmtS(invNet)}</div></div>
+    <div class="cat-row" style="border-top:2px solid var(--border);margin-top:5px;padding-top:11px">
+      <div class="cat-name" style="font-weight:700;font-size:14px">🏆 Net Earnings</div>
+      <div style="font-family:var(--heading);font-size:22px;font-weight:800;color:${net>=0?'var(--accent2)':'var(--danger)'}">${fmtS(net)}</div>
+    </div>`;
+}
+
+function renderSettings(){
+  document.getElementById('srcList').innerHTML=allSrc().map(s=>`<div class="manage-item"><span>${s}</span>${db.customSources.includes(s)?`<button class="del-btn" onclick="remSrc('${s.replace(/'/g,"\\'")}')">✕ Remove</button>`:'<span style="font-size:9.5px;color:var(--muted);background:var(--surface2);padding:2px 7px;border-radius:10px;border:1px solid var(--border)">default</span>'}</div>`).join('');
+  document.getElementById('catList').innerHTML=allCat().map(c=>`<div class="manage-item"><span>${c}</span>${db.customCategories.includes(c)?`<button class="del-btn" onclick="remCat('${c.replace(/'/g,"\\'")}')">✕ Remove</button>`:'<span style="font-size:9.5px;color:var(--muted);background:var(--surface2);padding:2px 7px;border-radius:10px;border:1px solid var(--border)">default</span>'}</div>`).join('');
+  updateBackupInfo();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init(){
+  load();
+  const t=today();
+  ['incDate','expDate','mileDate','odoDate','invDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=t;});
+  document.getElementById('dateDisplay').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  if(window.matchMedia('(display-mode: browser)').matches&&/Android|iPhone/i.test(navigator.userAgent)){document.getElementById('installBanner').style.display='flex';}
+  // Live $/mile calculator
+  ['incAmt','incMiles'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',updateLiveEarnPerMile);});
+  populateSelects();
+  renderAll();
+}
+init();
+</script>
+</body>
+</html>
